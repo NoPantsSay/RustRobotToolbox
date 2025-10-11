@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+/* biome-ignore lint/suspicious/noUnknownAtRules: just ignore */
+@theme {
+  --color-scheme: #ecb330;
+  --color-scheme-background: color-mix(
+    in srgb,
+    var(--color-scheme) 16%,
+    transparent
+  );
+  --color-scheme-hover-background: color-mix(
+    in srgb,
+    var(--color-scheme) 24%,
+    transparent
+  );
+}
+
+/* biome-ignore lint/suspicious/noUnknownAtRules: just ignore */
+@theme {
+  --color-dialog-background: #ffffff;
+  --color-data-grid-border: #fafafa;
+  --color-description: #6f6f6f;
+  --color-border: #d6d6d6;
+  --color-disable-foreground: color-mix(in srgb, #000000 26%, transparent);
+  --color-disable-background: color-mix(in srgb, #000000 12%, transparent);
+  --color-hover-background: color-mix(in srgb, #000000 4%, transparent);
+  --color-second-background: #f4f4f4;
+  --color-background: #ffffff;
+  --color-foreground: #393939;
+}
+
+.dark {
+  --color-dialog-background: #292929;
+  --color-data-grid-border: #1c1c1c;
+  --color-description: #a7a7a7;
+  --color-border: #585858;
+  --color-disable-foreground: color-mix(in srgb, #ffffff 30%, transparent);
+  --color-disable-background: color-mix(in srgb, #ffffff 12%, transparent);
+  --color-hover-background: color-mix(in srgb, #ffffff 8%, transparent);
+  --color-second-background: #202020;
+  --color-background: #121212;
+  --color-foreground: #ffffff;
+}
+
+body {
+  color: var(--color-foreground);
+  background: var(--color-background);
+}
