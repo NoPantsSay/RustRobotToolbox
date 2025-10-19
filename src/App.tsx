@@ -11,6 +11,9 @@ import { Home } from "./pages/home/home";
 import { Layouts } from "./pages/home/layouts/layouts";
 import { Recordings } from "./pages/home/recordings/recordings";
 import { Timeline } from "./pages/home/timeline/timeline";
+import { Desktop } from "./pages/settings/desktop/desktop";
+import { Extensions } from "./pages/settings/extensions/extensions";
+import { General } from "./pages/settings/general/general";
 import { Settings } from "./pages/settings/settings";
 import { View } from "./pages/view/view";
 import { useLanguage } from "./stores/useLanguage";
@@ -43,7 +46,13 @@ function App() {
             <Route path="timeline" element={<Timeline />} />
             <Route path="layouts" element={<Layouts />} />
           </Route>
-          <Route path="/settings" element={<Settings />} />
+          <Route path="/settings" element={<Settings />}>
+            <Route index element={<Navigate to="general" replace />} />
+            <Route path="general" element={<General />} />
+            <Route path="extensions" element={<Extensions />} />
+            <Route path="desktop" element={<Desktop />} />
+          </Route>
+
           <Route path="/view" element={<View />} />
         </Routes>
       </main>

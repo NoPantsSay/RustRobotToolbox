@@ -6,21 +6,25 @@ import {
   HiOutlineStopCircle,
 } from "react-icons/hi2";
 import { RiLayoutMasonryLine } from "react-icons/ri";
-import { FormattedMessage, useIntl } from "react-intl";
+import { useIntl } from "react-intl";
 import { useLocation, useNavigate } from "react-router-dom";
 import { HomeNavButton } from "../../../components/buttons/homeNavButton";
+import { useLanguage } from "../../../stores/useLanguage";
 
 export function Browse() {
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
   const intl = useIntl();
+  const { language } = useLanguage();
 
   return (
     <>
       <div className="px-4 leading-8">
         <span className="text-description">
-          <FormattedMessage id={"home.browse"} />
+          {intl
+            .formatMessage({ id: "home.browse" })
+            .toLocaleUpperCase(language)}
         </span>
       </div>
       <HomeNavButton

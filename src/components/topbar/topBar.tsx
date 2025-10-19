@@ -12,6 +12,9 @@ const titles = new Map<string, string>([
   ["/home/events", "home.events"],
   ["/home/timeline", "home.timeline"],
   ["/home/layouts", "home.layouts"],
+  ["/settings/general", "setting.settings"],
+  ["/settings/extensions", "setting.settings"],
+  ["/settings/desktop", "setting.settings"],
 ]);
 
 export function TopBar() {

@@ -1,9 +1,11 @@
 import { HiLink, HiOutlineFolder } from "react-icons/hi2";
-import { FormattedMessage, useIntl } from "react-intl";
+import { useIntl } from "react-intl";
 import { HomeNavButton } from "../../../components/buttons/homeNavButton";
+import { useLanguage } from "../../../stores/useLanguage";
 
 export function OpenDataSources() {
   const intl = useIntl();
+  const { language } = useLanguage();
 
   const handleOpenFile = () => {
     alert("open file");
@@ -17,7 +19,9 @@ export function OpenDataSources() {
     <>
       <div className="px-4 leading-8">
         <span className="text-description">
-          <FormattedMessage id={"home.open_data_sources"} />
+          {intl
+            .formatMessage({ id: "home.open_data_sources" })
+            .toLocaleUpperCase(language)}
         </span>
       </div>
       <HomeNavButton
