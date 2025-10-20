@@ -1,7 +1,7 @@
 import "./styles/globals.css";
 import { useEffect } from "react";
 import { IntlProvider } from "react-intl";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import { useDarkMode } from "react-theme-detector";
 import { TopBar } from "./components/topbar/topBar";
 import { Dashboard } from "./pages/home/dashboard/dashboard";
@@ -33,29 +33,31 @@ function App() {
 
   return (
     <IntlProvider locale={language} messages={getMessage()}>
-      <main className="h-screen w-screen grid grid-rows-[auto_1fr] grid-cols-1">
-        <TopBar />
-        <Routes>
-          <Route path="/" element={<Navigate to="/home" replace />} />
-          <Route path="/home" element={<Home />}>
-            <Route index element={<Navigate to="dashboard" replace />} />
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="devices" element={<Devices />} />
-            <Route path="recordings" element={<Recordings />} />
-            <Route path="events" element={<Events />} />
-            <Route path="timeline" element={<Timeline />} />
-            <Route path="layouts" element={<Layouts />} />
-          </Route>
-          <Route path="/settings" element={<Settings />}>
-            <Route index element={<Navigate to="general" replace />} />
-            <Route path="general" element={<General />} />
-            <Route path="extensions" element={<Extensions />} />
-            <Route path="desktop" element={<Desktop />} />
-          </Route>
+      <HashRouter>
+        <main className="h-screen w-screen grid grid-rows-[auto_1fr] grid-cols-1">
+          <TopBar />
+          <Routes>
+            <Route path="/" element={<Navigate to="/home" replace />} />
+            <Route path="/home" element={<Home />}>
+              <Route index element={<Navigate to="dashboard" replace />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="devices" element={<Devices />} />
+              <Route path="recordings" element={<Recordings />} />
+              <Route path="events" element={<Events />} />
+              <Route path="timeline" element={<Timeline />} />
+              <Route path="layouts" element={<Layouts />} />
+            </Route>
+            <Route path="/settings" element={<Settings />}>
+              <Route index element={<Navigate to="general" replace />} />
+              <Route path="general" element={<General />} />
+              <Route path="extensions" element={<Extensions />} />
+              <Route path="desktop" element={<Desktop />} />
+            </Route>
 
-          <Route path="/view" element={<View />} />
-        </Routes>
-      </main>
+            <Route path="/view" element={<View />} />
+          </Routes>
+        </main>
+      </HashRouter>
     </IntlProvider>
   );
 }

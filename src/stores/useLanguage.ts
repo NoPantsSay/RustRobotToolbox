@@ -1,3 +1,5 @@
+import { setDefaultOptions } from "date-fns";
+import { enUS, zhCN } from "date-fns/locale";
 import { flatten } from "flat";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
@@ -9,6 +11,14 @@ const messages = new Map<string, Record<string, string>>([
   ["zh", flatten(zhMessages)],
 ]);
 
+function setDefaultLocal(language: string) {
+  // 设置全局语言环境
+  if (language === "zh") {
+    setDefaultOptions({ locale: zhCN });
+  } else {
+    setDefaultOptions({ locale: enUS });
+  }
+}
 interface LanguageState {
   language: string;
   setLanguage: (input: string) => void;
@@ -21,6 +31,7 @@ export const useLanguage = create<LanguageState>()(
       language: "zh",
       setLanguage: (input: string) => {
         set({ language: input });
+        setDefaultLocal(input);
       },
       getMessage: () => {
         const currentLocale = get().language;
@@ -30,6 +41,10 @@ export const useLanguage = create<LanguageState>()(
     {
       name: "language", // unique name
       storage: createJSONStorage(() => localStorage),
+      onRehydrateStorage: () => (state) => {
+        console.log("加载语言", state);
+        setDefaultLocal(state?.language || "zh");
+      },
     },
   ),
 );

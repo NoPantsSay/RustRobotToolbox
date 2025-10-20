@@ -1,28 +1,16 @@
 import { Button } from "@headlessui/react";
 import clsx from "clsx";
-import { FormattedMessage } from "react-intl";
 import { useLocation, useNavigate } from "react-router-dom";
 import Logo from "../../assets/react.svg";
+import { useTitle } from "../../globals/useTitle";
 import { TitleTimeZone } from "./titleTimeZone";
-
-const titles = new Map<string, string>([
-  ["/home/dashboard", "home.dashboard"],
-  ["/home/devices", "home.devices"],
-  ["/home/recordings", "home.recordings"],
-  ["/home/events", "home.events"],
-  ["/home/timeline", "home.timeline"],
-  ["/home/layouts", "home.layouts"],
-  ["/settings/general", "setting.settings"],
-  ["/settings/extensions", "setting.settings"],
-  ["/settings/desktop", "setting.settings"],
-]);
 
 export function TopBar() {
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
 
-  const title = titles.get(currentPath);
+  const title = useTitle((state) => state.title);
 
   const isDisableReturnHome = currentPath === "/home/dashboard";
 
@@ -42,9 +30,7 @@ export function TopBar() {
       >
         <img src={Logo} alt="logo" width={32} height={32} />
       </Button>
-      <span className="text-center text-sm mx-auto">
-        {title && <FormattedMessage id={title} />}
-      </span>
+      <span className="text-center text-sm mx-auto">{title}</span>
       <TitleTimeZone />
     </div>
   );

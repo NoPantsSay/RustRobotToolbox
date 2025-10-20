@@ -1,15 +1,58 @@
 {
+  "common": {
+    "add": "Add",
+    "cancel": "Cancel",
+    "create": "Create",
+    "delete": "Delete",
+    "download": "Download",
+    "name": "Name",
+    "open": "Open",
+    "rename": "Rename",
+    "search": "Search",
+    "type": "Type",
+    "upload": "Upload"
+  },
   "home": {
-    "open_data_sources": "Open data sources",
-    "open_local_files": "Open local files...",
-    "open_connection": "Open connection...",
     "browse": "Browse",
     "dashboard": "Dashboard",
     "devices": "Devices",
     "events": "Events",
     "layouts": "Layouts",
+    "open_connection": "Open connection...",
+    "open_data_sources": "Open data sources",
+    "open_local_files": "Open local files...",
     "recordings": "Recordings",
     "timeline": "Timeline"
+  },
+  "layouts": {
+    "{num}_selected_layout": "{num} selected layout",
+    "create_new_layout": "Create new layout",
+    "delete_{name}?": "Delete \"{name}\" ?",
+    "delete_{num}_selected_layouts?": "Delete {num} selected layouts?",
+    "delete_desc": "This action cannot be undone.",
+    "import_layout": "Import layout",
+    "last_opened": "Last opened",
+    "last_updated": "Last updated",
+    "layout": "Layout",
+    "layout_name": "Layout name",
+    "layouts": "Layouts",
+    "local_copy": "Local copy",
+    "new_layout": "New layout",
+    "types": {
+      "all": "All",
+      "local": "Local",
+      "online": "Online"
+    },
+    "update_filters": {
+      "all_time": "All time",
+      "last_30_days": "Last 30 days",
+      "last_7_days": "Last 7 days",
+      "last_month": "Last month",
+      "this_month": "This month",
+      "this_year": "This year",
+      "today": "Today",
+      "yesterday": "Yesterday"
+    }
   },
   "setting": {
     "appearance": "Appearance",

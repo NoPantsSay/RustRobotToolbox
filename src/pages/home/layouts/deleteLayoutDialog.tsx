@@ -1,6 +1,7 @@
 import { Button, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { clsx } from "clsx";
 import { useHotkeys } from "react-hotkeys-hook";
+import { FormattedMessage } from "react-intl";
 
 export function DeleteLayoutDialog({
   open,
@@ -29,7 +30,9 @@ export function DeleteLayoutDialog({
           <DialogTitle className="px-6 py-4 font-bold text-xl">
             {title}
           </DialogTitle>
-          <div className="px-6 pb-5 text-sm">This action cannot be undone.</div>
+          <div className="px-6 pb-5 text-sm">
+            <FormattedMessage id={"layouts.delete_desc"} />
+          </div>
           <div className="flex px-6 pb-6 gap-4 justify-end">
             <Button
               onClick={onClose}
@@ -37,7 +40,7 @@ export function DeleteLayoutDialog({
                 "outline-none text-sm items-center py-1 px-4 cursor-pointer border border-foreground hover:bg-hover-background"
               }
             >
-              Cancel
+              <FormattedMessage id={"common.cancel"} />
             </Button>
             <Button
               onClick={() => {
@@ -48,7 +51,7 @@ export function DeleteLayoutDialog({
                 "outline-none text-sm items-center py-1 px-4 cursor-pointer bg-red-500 hover:bg-red-500/50",
               )}
             >
-              Delete
+              <FormattedMessage id={"common.delete"} />
             </Button>
           </div>
         </DialogPanel>

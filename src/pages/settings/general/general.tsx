@@ -11,12 +11,13 @@ import {
   RadioGroup,
 } from "@headlessui/react";
 import clsx from "clsx";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { BsLaptopFill } from "react-icons/bs";
 import { HiMiniMoon, HiMiniSun } from "react-icons/hi2";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { Tooltip } from "react-tooltip";
 import { UpDownIcon } from "../../../components/icons/upDownIcon";
+import { useTitle } from "../../../globals/useTitle";
 import { useLanguage } from "../../../stores/useLanguage";
 import { ThemeType, useTheme } from "../../../stores/useTheme";
 import {
@@ -55,6 +56,12 @@ export const languages = [
 ] as const;
 
 export function General() {
+  const setTitle = useTitle((state) => state.setTitle);
+  const intl = useIntl();
+  useEffect(() => {
+    setTitle(intl.formatMessage({ id: "setting.settings" }));
+  }, [setTitle, intl]);
+
   const { theme, setTheme } = useTheme();
   const { timeZone, timeFormat, setTimeFormat } = useTimeZoneStore();
   const { language, setLanguage } = useLanguage();

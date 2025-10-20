@@ -11,7 +11,7 @@ import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { clsx } from "clsx";
 import { useState } from "react";
 import { HiEllipsisVertical } from "react-icons/hi2";
-
+import { FormattedMessage, useIntl } from "react-intl";
 import {
   type LayoutsInfo,
   LayoutTypeEnum,
@@ -29,6 +29,7 @@ export function LayoutItemMenuButton({
   data: LayoutsInfo;
   onDelete: (uuid: string) => void;
 }) {
+  const intl = useIntl();
   const [isDeleteLayoutOpen, setIsDeleteLayoutOpen] = useState(false);
   const [isRenameLayoutOpen, setIsRenameLayoutOpen] = useState(false);
   const {
@@ -84,7 +85,9 @@ export function LayoutItemMenuButton({
               }}
               className="flex flex-row py-1.5 px-4 items-center data-focus:bg-hover-background cursor-pointer"
             >
-              <span className="text-sm">Download</span>
+              <span className="text-sm">
+                <FormattedMessage id={"common.download"} />
+              </span>
             </Button>
           </MenuItem>
           <MenuItem>
@@ -94,13 +97,17 @@ export function LayoutItemMenuButton({
               }}
               className="flex flex-row py-1.5 px-4 items-center data-focus:bg-hover-background cursor-pointer"
             >
-              <span className="text-sm">Make a local copy</span>
+              <span className="text-sm">
+                <FormattedMessage id={"layouts.local_copy"} />
+              </span>
             </Button>
           </MenuItem>
           {data.type === LayoutTypeEnum.Local && (
             <MenuItem>
               <Button className="flex flex-row py-1.5 px-4 items-center data-focus:bg-hover-background cursor-pointer">
-                <span className="text-sm">Upload</span>
+                <span className="text-sm">
+                  <FormattedMessage id={"common.upload"} />
+                </span>
               </Button>
             </MenuItem>
           )}
@@ -111,7 +118,9 @@ export function LayoutItemMenuButton({
               }}
               className="flex flex-row py-1.5 px-4 items-center data-focus:bg-hover-background cursor-pointer"
             >
-              <span className="text-sm">Rename</span>
+              <span className="text-sm">
+                <FormattedMessage id={"common.rename"} />
+              </span>
             </Button>
           </MenuItem>
           <MenuItem>
@@ -124,7 +133,9 @@ export function LayoutItemMenuButton({
               }}
               className="flex flex-row py-1.5 px-4 items-center data-focus:bg-hover-background cursor-pointer"
             >
-              <span className="text-sm text-red-500">Delete</span>
+              <span className="text-sm text-red-500">
+                <FormattedMessage id={"common.delete"} />
+              </span>
             </Button>
           </MenuItem>
         </MenuItems>
@@ -135,7 +146,10 @@ export function LayoutItemMenuButton({
           onClose={() => {
             setIsDeleteLayoutOpen(false);
           }}
-          title={`Delete "${data.name}" ?`}
+          title={intl.formatMessage(
+            { id: "layouts.delete_{name}?" },
+            { name: data.name },
+          )}
           onDelete={() => {
             immerDelLayout(uuid);
             onDelete(uuid);

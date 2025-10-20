@@ -2,8 +2,8 @@ import { Button } from "@headlessui/react";
 import { clsx } from "clsx";
 import { useState } from "react";
 import { IoTrashOutline } from "react-icons/io5";
+import { FormattedMessage, useIntl } from "react-intl";
 import type { Updater } from "use-immer";
-
 import { useLayouts } from "../../../stores/useLayouts";
 import { DeleteLayoutDialog } from "./deleteLayoutDialog";
 
@@ -14,6 +14,7 @@ export function SelecetItemInterface({
   layoutsCheckedSet: Set<string>;
   setLayoutsCheckedSet: Updater<Set<string>>;
 }) {
+  const intl = useIntl();
   const [isDeleteLayoutOpen, setIsDeleteLayoutOpen] = useState(false);
   const { immerDelLayout } = useLayouts();
 
@@ -31,10 +32,15 @@ export function SelecetItemInterface({
           className="flex flex-row items-center border border-red-500/50 text-red-500 hover:border-red-500 hover:bg-hover-background py-1.5 pl-2 pr-3 gap-2 cursor-pointer"
         >
           <IoTrashOutline size={16} />
-          <span className="text-xs">Delete</span>
+          <span className="text-xs">
+            <FormattedMessage id={"common.delete"} />
+          </span>
         </Button>
         <span className="text-xs text-description">
-          {layoutsCheckedSet.size} selected Layout
+          <FormattedMessage
+            id={"layouts.{num}_selected_layout"}
+            values={{ num: `${layoutsCheckedSet.size}` }}
+          />
         </span>
       </div>
       {isDeleteLayoutOpen && (
@@ -43,7 +49,10 @@ export function SelecetItemInterface({
           onClose={() => {
             setIsDeleteLayoutOpen(false);
           }}
-          title={`Delete ${layoutsCheckedSet.size} selected layouts?`}
+          title={intl.formatMessage(
+            { id: "layouts.delete_{num}_selected_layouts?" },
+            { num: layoutsCheckedSet.size },
+          )}
           onDelete={() => {
             layoutsCheckedSet.forEach((uuid) => {
               immerDelLayout(uuid);

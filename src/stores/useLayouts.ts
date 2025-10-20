@@ -16,7 +16,7 @@ enableMapSet();
 export enum LayoutTypeEnum {
   All = "all",
   Local = "local",
-  Online = "Online",
+  Online = "online",
 }
 
 interface LayoutTypeInfo {
@@ -27,15 +27,15 @@ interface LayoutTypeInfo {
 export const layoutTypes: LayoutTypeInfo[] = [
   {
     type: LayoutTypeEnum.All,
-    display: "All",
+    display: "layouts.types.all",
   },
   {
     type: LayoutTypeEnum.Local,
-    display: "Local",
+    display: "layouts.types.local",
   },
   {
     type: LayoutTypeEnum.Online,
-    display: "Online",
+    display: "layouts.types.online",
   },
 ];
 
@@ -61,56 +61,56 @@ interface LayoutUpdateFilterInfo {
 export const layoutUpdateFilters: LayoutUpdateFilterInfo[] = [
   {
     type: LayoutUpdateFilterEnum.All,
-    display: "All time",
+    display: "layouts.update_filters.all_time",
     filter: (_laterDate: Date, _earlierDate: Date) => {
       return true;
     },
   },
   {
     type: LayoutUpdateFilterEnum.Today,
-    display: "Today",
+    display: "layouts.update_filters.today",
     filter: (laterDate: Date, earlierDate: Date) => {
       return differenceInCalendarDays(laterDate, earlierDate) === 0;
     },
   },
   {
     type: LayoutUpdateFilterEnum.Yesterday,
-    display: "Yesterday",
+    display: "layouts.update_filters.yesterday",
     filter: (laterDate: Date, earlierDate: Date) => {
       return differenceInCalendarDays(laterDate, earlierDate) === 1;
     },
   },
   {
     type: LayoutUpdateFilterEnum.Last7Days,
-    display: "Last 7 Days",
+    display: "layouts.update_filters.last_7_days",
     filter: (laterDate: Date, earlierDate: Date) => {
       return differenceInCalendarDays(laterDate, earlierDate) <= 7;
     },
   },
   {
     type: LayoutUpdateFilterEnum.Last30Days,
-    display: "Last 30 Days",
+    display: "layouts.update_filters.last_30_days",
     filter: (laterDate: Date, earlierDate: Date) => {
       return differenceInCalendarDays(laterDate, earlierDate) <= 30;
     },
   },
   {
     type: LayoutUpdateFilterEnum.ThisMonth,
-    display: "This month",
+    display: "layouts.update_filters.this_month",
     filter: (laterDate: Date, earlierDate: Date) => {
       return differenceInCalendarMonths(laterDate, earlierDate) === 0;
     },
   },
   {
     type: LayoutUpdateFilterEnum.LastMonth,
-    display: "Last month",
+    display: "layouts.update_filters.last_month",
     filter: (laterDate: Date, earlierDate: Date) => {
       return differenceInCalendarMonths(laterDate, earlierDate) === 1;
     },
   },
   {
     type: LayoutUpdateFilterEnum.ThisYear,
-    display: "This year",
+    display: "layouts.update_filters.this_year",
     filter: (laterDate: Date, earlierDate: Date) => {
       return differenceInCalendarYears(laterDate, earlierDate) === 0;
     },

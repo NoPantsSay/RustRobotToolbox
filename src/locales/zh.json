@@ -1,15 +1,58 @@
 {
+  "common": {
+    "add": "添加",
+    "cancel": "取消",
+    "create": "创建",
+    "delete": "删除",
+    "download": "下载",
+    "name": "名称",
+    "open": "打开",
+    "rename": "重命名",
+    "search": "查找",
+    "type": "类型",
+    "upload": "上传"
+  },
   "home": {
-    "open_data_sources": "加载数据源",
-    "open_local_files": "打开本地文件...",
-    "open_connection": "打开连接...",
     "browse": "浏览",
     "dashboard": "仪表盘",
     "devices": "设备",
     "events": "事件",
     "layouts": "布局",
+    "open_connection": "打开连接...",
+    "open_data_sources": "加载数据源",
+    "open_local_files": "打开本地文件...",
     "recordings": "录制",
     "timeline": "时间线"
+  },
+  "layouts": {
+    "{num}_selected_layout": "{num}个已选布局",
+    "create_new_layout": "创建新布局",
+    "delete_{name}?": "删除\"{name}\"?",
+    "delete_{num}_selected_layouts?": "删除{num}个已选布局？",
+    "delete_desc": "此操作无法撤销。",
+    "import_layout": "导入布局",
+    "last_opened": "最后打开",
+    "last_updated": "最后更新",
+    "layout": "布局",
+    "layout_name": "布局名称",
+    "layouts": "布局",
+    "local_copy": "本地复制",
+    "new_layout": "新建布局",
+    "types": {
+      "all": "全部",
+      "local": "本地",
+      "online": "在线"
+    },
+    "update_filters": {
+      "all_time": "所有时间",
+      "last_30_days": "最近30天",
+      "last_7_days": "最近7天",
+      "last_month": "上月",
+      "this_month": "本月",
+      "this_year": "今年",
+      "today": "今天",
+      "yesterday": "昨天"
+    }
   },
   "setting": {
     "appearance": "外观",

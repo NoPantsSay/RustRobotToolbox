@@ -10,16 +10,19 @@ import {
 } from "@headlessui/react";
 import { clsx } from "clsx";
 import { formatDistance } from "date-fns";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { HiArrowDown, HiArrowUp } from "react-icons/hi2";
 import {
   MdCheckBox,
   MdCheckBoxOutlineBlank,
   MdIndeterminateCheckBox,
 } from "react-icons/md";
+import { FormattedMessage, useIntl } from "react-intl";
+import { useNavigate } from "react-router-dom";
 import { Tooltip } from "react-tooltip";
 import { useImmer } from "use-immer";
 import { UpDownIcon } from "../../../components/icons/upDownIcon";
+import { useTitle } from "../../../globals/useTitle";
 import {
   LayoutTypeEnum,
   LayoutUpdateFilterEnum,
@@ -30,7 +33,7 @@ import {
 import { useTimeZoneStore } from "../../../stores/useTimeZoneStore";
 import { LayoutItemMenuButton } from "./layoutItemMenuButton";
 import { SelecetItemInterface } from "./selecetItemInterface";
-import { TitleAddButton } from "./titleAddButton";
+import { TopAddButton } from "./topAddButton";
 
 enum SortTypeEnum {
   NAME_UP,
@@ -42,6 +45,14 @@ enum SortTypeEnum {
 }
 
 export function Layouts() {
+  const setTitle = useTitle((state) => state.setTitle);
+  const intl = useIntl();
+  useEffect(() => {
+    setTitle(intl.formatMessage({ id: "home.layouts" }));
+  }, [setTitle, intl]);
+
+  const navigate = useNavigate();
+
   const date = useMemo(() => new Date(), []);
 
   const { getDateFormat } = useTimeZoneStore();
@@ -186,8 +197,10 @@ export function Layouts() {
           // 标题栏
         }
         <div className="flex flex-row justify-between items-center p-3 border-b border-b-border">
-          <span className="text-base">Layout</span>
-          <TitleAddButton />
+          <span className="text-base">
+            <FormattedMessage id={"layouts.layout"} />
+          </span>
+          <TopAddButton />
         </div>
         {
           // 过滤栏
@@ -201,13 +214,15 @@ export function Layouts() {
             // 名字
           }
           <Field className="flex flex-col ">
-            <Label className="py-1 text-sm text-description">Search</Label>
+            <Label className="py-1 text-sm text-description">
+              <FormattedMessage id={"common.search"} />
+            </Label>
             <Input
               value={inputValue}
               onChange={(event) => {
                 setInputValue(event.target.value);
               }}
-              placeholder="Layout name"
+              placeholder={intl.formatMessage({ id: "layouts.layout_name" })}
               className={clsx(
                 "py-2 px-2.5 text-sm border border-border hover:border-foreground focus:border-scheme outline-none",
               )}
@@ -217,7 +232,9 @@ export function Layouts() {
             // 类型
           }
           <Field className="flex flex-col">
-            <Label className="py-1 text-sm text-description ">Type</Label>
+            <Label className="py-1 text-sm text-description ">
+              <FormattedMessage id={"common.type"} />
+            </Label>
             <Listbox value={layoutType} onChange={setLayoutType}>
               <ListboxButton
                 className={clsx(
@@ -227,7 +244,7 @@ export function Layouts() {
                 {({ open }) => {
                   return (
                     <>
-                      {getLayoutTypeDisplay(layoutType)}
+                      <FormattedMessage id={getLayoutTypeDisplay(layoutType)} />
                       <UpDownIcon
                         open={open}
                         className="group pointer-events-none absolute top-2.5 right-2.5 size-4 fill-foreground"
@@ -252,7 +269,7 @@ export function Layouts() {
                     )}
                   >
                     <Label className="text-sm pointer-events-none">
-                      {data.display}
+                      <FormattedMessage id={data.display} />
                     </Label>
                   </ListboxOption>
                 ))}
@@ -264,7 +281,7 @@ export function Layouts() {
           }
           <Field className="flex flex-col">
             <Label className="py-1 text-sm text-description ">
-              Lasted update
+              <FormattedMessage id={"layouts.last_updated"} />
             </Label>
             <Listbox
               value={layoutUpdateFilter}
@@ -278,7 +295,9 @@ export function Layouts() {
                 {({ open }) => {
                   return (
                     <>
-                      {getlayoutUpdateFilterDisplay(layoutUpdateFilter)}
+                      <FormattedMessage
+                        id={getlayoutUpdateFilterDisplay(layoutUpdateFilter)}
+                      />
                       <UpDownIcon
                         open={open}
                         className="group pointer-events-none absolute top-2.5 right-2.5 size-4 fill-foreground"
@@ -303,7 +322,7 @@ export function Layouts() {
                     )}
                   >
                     <Label className="text-sm pointer-events-none">
-                      {data.display}
+                      <FormattedMessage id={data.display} />
                     </Label>
                   </ListboxOption>
                 ))}
@@ -350,7 +369,9 @@ export function Layouts() {
                 }}
                 className="group flex flex-row h-full items-center px-2.5 border-b border-border outline-none"
               >
-                <span className="text-xs">Layouts</span>
+                <span className="text-xs">
+                  <FormattedMessage id={"layouts.layouts"} />
+                </span>
                 <div className="flex size-6 p-1 items-center cursor-pointer hover:bg-hover-background">
                   <LayoutsSortIconComponent
                     className={clsx(
@@ -364,7 +385,9 @@ export function Layouts() {
                 </div>
               </Button>
               <div className="flex flex-row h-full items-center px-2.5 border-b border-border">
-                <span className="text-xs">Type</span>
+                <span className="text-xs">
+                  <FormattedMessage id={"common.type"} />
+                </span>
               </div>
               <Button
                 onClick={() => {
@@ -376,7 +399,9 @@ export function Layouts() {
                 }}
                 className="group flex flex-row h-full items-center px-2.5 border-b border-border outline-none"
               >
-                <span className="text-xs">Last Updated</span>
+                <span className="text-xs">
+                  <FormattedMessage id={"layouts.last_updated"} />
+                </span>
                 <div className="flex size-6 p-1 items-center cursor-pointer hover:bg-hover-background">
                   <LastUpdatedSortIconComponent
                     className={clsx(
@@ -399,7 +424,9 @@ export function Layouts() {
                 }}
                 className="group flex flex-row h-full items-center px-2.5 border-b border-border outline-none"
               >
-                <span className="text-xs">Last Opened</span>
+                <span className="text-xs">
+                  <FormattedMessage id={"layouts.last_opened"} />
+                </span>
                 <div className="flex size-6 p-1 items-center cursor-pointer hover:bg-hover-background">
                   <LastOpenedSortIconComponent
                     className={clsx(
@@ -420,7 +447,6 @@ export function Layouts() {
               // biome-ignore lint/a11y/useKeyWithClickEvents:  just ignore
               <div
                 onClick={() => {
-                  console.log("div");
                   itemToggle(uuid);
                 }}
                 key={uuid}
@@ -485,7 +511,9 @@ export function Layouts() {
                     },
                   )}
                 >
-                  <span className="text-xs text-description ">{data.type}</span>
+                  <span className="text-xs text-description ">
+                    <FormattedMessage id={getLayoutTypeDisplay(data.type)} />
+                  </span>
                 </div>
                 <div
                   className={clsx(
@@ -569,13 +597,16 @@ export function Layouts() {
                   <Button
                     onClick={(event) => {
                       event.stopPropagation();
+                      navigate("/view", { state: { layoutUUID: uuid } });
                     }}
                     className={clsx(
                       "outline-none border items-center cursor-pointer",
                       "hidden group-hover:block text-scheme/50 hover:text-scheme",
                     )}
                   >
-                    <span className="text-xs px-4">Open</span>
+                    <span className="text-xs px-4">
+                      <FormattedMessage id={"common.open"} />
+                    </span>
                   </Button>
                 </div>
                 <div

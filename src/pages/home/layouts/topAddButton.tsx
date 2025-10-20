@@ -12,10 +12,11 @@ import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { PiDownload } from "react-icons/pi";
 import { RiLayoutMasonryLine } from "react-icons/ri";
+import { FormattedMessage } from "react-intl";
 import { useLayouts } from "../../../stores/useLayouts";
 import { AddLayoutDialog } from "./addLayoutDialog";
 
-export function TitleAddButton() {
+export function TopAddButton() {
   const [isNewLayoutOpen, setIsNewLayoutOpen] = useState(false);
 
   const { loadDataFromJSON } = useLayouts();
@@ -43,7 +44,9 @@ export function TitleAddButton() {
       <Menu>
         <MenuButton className="flex flex-row items-center px-2.25 py-0.75 border focus:not-data-focus:outline-none cursor-pointer">
           <FaPlus size={16} />
-          <span className="pl-2 text-xs">Add</span>
+          <span className="pl-2 text-xs">
+            <FormattedMessage id={"common.add"} />
+          </span>
         </MenuButton>
 
         <MenuItems
@@ -58,7 +61,9 @@ export function TitleAddButton() {
               className="flex flex-row py-1 px-3 items-center data-focus:bg-hover-background cursor-pointer"
             >
               <RiLayoutMasonryLine size={20} />
-              <span className="pl-3 text-sm">New layout</span>
+              <span className="pl-3 text-sm">
+                <FormattedMessage id={"layouts.new_layout"} />
+              </span>
             </Button>
           </MenuItem>
           <MenuItem>
@@ -69,7 +74,9 @@ export function TitleAddButton() {
               className="flex flex-row py-1 px-3 items-center data-focus:bg-hover-background cursor-pointer"
             >
               <PiDownload size={20} />
-              <span className="pl-3 text-sm">Import layout</span>
+              <span className="pl-3 text-sm">
+                <FormattedMessage id={"layouts.import_layout"} />
+              </span>
             </Button>
           </MenuItem>
         </MenuItems>

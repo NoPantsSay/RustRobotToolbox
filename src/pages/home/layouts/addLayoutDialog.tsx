@@ -16,8 +16,9 @@ import { clsx } from "clsx";
 import { useMemo, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { MdClose } from "react-icons/md";
+import { FormattedMessage, useIntl } from "react-intl";
+import { titleCase } from "title-case";
 import { UpDownIcon } from "../../../components/icons/upDownIcon";
-
 import {
   LayoutTypeEnum,
   layoutTypes,
@@ -31,6 +32,7 @@ export function AddLayoutDialog({
   open: boolean;
   onClose: () => void;
 }) {
+  const intl = useIntl();
   const [name, setName] = useState("");
   const [layoutType, setLayoutType] = useState(LayoutTypeEnum.Local);
   const { getLayoutTypeDisplay, immerAddLayout } = useLayouts();
@@ -58,7 +60,9 @@ export function AddLayoutDialog({
         <DialogPanel className="flex-1 max-w-md rounded-md bg-dialog-background drop-shadow-xl overflow-y-auto">
           <div className="flex flex-row border-b border-b-border justify-between items-center px-6 pt-4 pb-3">
             <DialogTitle className="font-bold text-xl">
-              Create New Layout
+              {titleCase(
+                intl.formatMessage({ id: "layouts.create_new_layout" }),
+              )}
             </DialogTitle>
             <Button onClick={onClose} className="hover:bg-hover-background p-2">
               <MdClose size={16} />
@@ -66,21 +70,25 @@ export function AddLayoutDialog({
           </div>
           <Fieldset className="flex flex-col px-6 py-5 gap-2">
             <Field className="flex flex-col">
-              <Label className="text-xs pt-1 pb-2">Name</Label>
+              <Label className="text-xs pt-1 pb-2">
+                <FormattedMessage id={"common.name"} />
+              </Label>
               <Input
                 autoFocus={true}
                 value={name}
                 onChange={(event) => {
                   setName(event.target.value);
                 }}
-                placeholder="Layout name"
+                placeholder={intl.formatMessage({ id: "layouts.layout_name" })}
                 className={clsx(
                   "py-2 px-2.5 text-sm border border-border hover:border-foreground focus:border-scheme outline-none",
                 )}
               />
             </Field>
             <Field className="flex flex-col">
-              <Label className="text-xs pt-1 pb-2">Type</Label>
+              <Label className="text-xs pt-1 pb-2">
+                <FormattedMessage id={"common.type"} />
+              </Label>
               <Listbox value={layoutType} onChange={setLayoutType}>
                 <ListboxButton
                   disabled={true}
@@ -93,7 +101,9 @@ export function AddLayoutDialog({
                   {({ open }) => {
                     return (
                       <>
-                        {getLayoutTypeDisplay(layoutType)}
+                        <FormattedMessage
+                          id={getLayoutTypeDisplay(layoutType)}
+                        />
                         <UpDownIcon
                           open={open}
                           className="group pointer-events-none absolute top-2.5 right-2.5 size-4 fill-foreground"
@@ -118,7 +128,7 @@ export function AddLayoutDialog({
                       )}
                     >
                       <Label className="text-sm pointer-events-none">
-                        {data.display}
+                        <FormattedMessage id={data.display} />
                       </Label>
                     </ListboxOption>
                   ))}
@@ -133,7 +143,7 @@ export function AddLayoutDialog({
                 "outline-none text-sm items-center py-1 px-4 cursor-pointer border border-foreground hover:bg-hover-background"
               }
             >
-              Cancel
+              <FormattedMessage id={"common.cancel"} />
             </Button>
             <Button
               disabled={name === ""}
@@ -143,7 +153,7 @@ export function AddLayoutDialog({
                 "disabled:bg-disable-background disabled:text-disable-foreground",
               )}
             >
-              Create
+              <FormattedMessage id={"common.create"} />
             </Button>
           </div>
         </DialogPanel>
