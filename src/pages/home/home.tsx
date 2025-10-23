@@ -1,8 +1,6 @@
 import { clsx } from "clsx";
 import { Outlet } from "react-router-dom";
-import { Browse } from "./nav/browse";
-import { OpenDataSources } from "./nav/openDataSources";
-import { Setting } from "./nav/setting";
+import { HomeNavigate } from "../../components/navigate/homeNavigate";
 
 export function Home() {
   return (
@@ -15,16 +13,12 @@ export function Home() {
     >
       <div
         className={clsx(
-          "block min-w-[280px] bg-second-background border-r border-border px-3 pt-5 pb-4 text-xs ",
+          "block min-w-[280px] bg-second-background border-r border-border px-3 pt-5 pb-4",
           "not-sm:overflow-y-hide",
           "sm:overflow-y-auto",
         )}
       >
-        <OpenDataSources />
-        <hr className="mx-4 my-2 border-border" />
-        <Browse />
-        <hr className="mx-4 my-2 border-border" />
-        <Setting />
+        <HomeNavigate />
       </div>
 
       <Outlet />

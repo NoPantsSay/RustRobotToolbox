@@ -18,7 +18,6 @@ import {
   MdIndeterminateCheckBox,
 } from "react-icons/md";
 import { FormattedMessage, useIntl } from "react-intl";
-import { useNavigate } from "react-router-dom";
 import { Tooltip } from "react-tooltip";
 import { useImmer } from "use-immer";
 import { UpDownIcon } from "../../../components/icons/upDownIcon";
@@ -32,6 +31,7 @@ import {
 } from "../../../stores/useLayouts";
 import { useTimeZoneStore } from "../../../stores/useTimeZoneStore";
 import { LayoutItemMenuButton } from "./layoutItemMenuButton";
+import { LayoutItemOpenButton } from "./layoutItemOpenButton";
 import { SelecetItemInterface } from "./selecetItemInterface";
 import { TopAddButton } from "./topAddButton";
 
@@ -51,8 +51,6 @@ export function Layouts() {
     setTitle(intl.formatMessage({ id: "home.layouts" }));
   }, [setTitle, intl]);
 
-  const navigate = useNavigate();
-
   const date = useMemo(() => new Date(), []);
 
   const { getDateFormat } = useTimeZoneStore();
@@ -68,7 +66,7 @@ export function Layouts() {
   const [layoutUpdateFilter, setLayoutUpdateFilter] = useState(
     LayoutUpdateFilterEnum.All,
   );
-  const [layoutsSort, setLayoutsSort] = useState(SortTypeEnum.UPDATE_DOWN);
+  const [layoutsSort, setLayoutsSort] = useState(SortTypeEnum.OPEN_DOWN);
 
   const LayoutsSortIconComponent =
     layoutsSort === SortTypeEnum.NAME_UP ? HiArrowUp : HiArrowDown;
@@ -118,8 +116,8 @@ export function Layouts() {
             data_right.lastOpened === undefined
           )
             return 0;
-          if (data_left.lastOpened === undefined) return 1;
-          if (data_right.lastOpened === undefined) return -1;
+          if (data_left.lastOpened === undefined) return -1;
+          if (data_right.lastOpened === undefined) return 1;
 
           return (
             data_left.lastOpened.getTime() - data_right.lastOpened.getTime()
@@ -130,8 +128,8 @@ export function Layouts() {
             data_right.lastOpened === undefined
           )
             return 0;
-          if (data_left.lastOpened === undefined) return -1;
-          if (data_right.lastOpened === undefined) return 1;
+          if (data_left.lastOpened === undefined) return 1;
+          if (data_right.lastOpened === undefined) return -1;
 
           return (
             data_right.lastOpened.getTime() - data_left.lastOpened.getTime()
@@ -542,8 +540,8 @@ export function Layouts() {
                     style={{
                       fontSize: "12px",
                       lineHeight: "1.333",
-                      backgroundColor: `var(--color-background)`,
-                      color: `var(--color-foreground)`,
+                      backgroundColor: `var(--color-tooltip-background)`,
+                      color: `var(--color-tooltip-foreground)`,
                     }}
                   />
                 </div>
@@ -576,8 +574,8 @@ export function Layouts() {
                         style={{
                           fontSize: "12px",
                           lineHeight: "1.333",
-                          backgroundColor: `var(--color-background)`,
-                          color: `var(--color-foreground)`,
+                          backgroundColor: `var(--color-tooltip-background)`,
+                          color: `var(--color-tooltip-foreground)`,
                         }}
                       />
                     </>
@@ -594,20 +592,7 @@ export function Layouts() {
                     },
                   )}
                 >
-                  <Button
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      navigate("/view", { state: { layoutUUID: uuid } });
-                    }}
-                    className={clsx(
-                      "outline-none border items-center cursor-pointer",
-                      "hidden group-hover:block text-scheme/50 hover:text-scheme",
-                    )}
-                  >
-                    <span className="text-xs px-4">
-                      <FormattedMessage id={"common.open"} />
-                    </span>
-                  </Button>
+                  <LayoutItemOpenButton uuid={uuid} />
                 </div>
                 <div
                   className={clsx(

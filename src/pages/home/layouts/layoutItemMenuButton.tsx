@@ -32,12 +32,8 @@ export function LayoutItemMenuButton({
   const intl = useIntl();
   const [isDeleteLayoutOpen, setIsDeleteLayoutOpen] = useState(false);
   const [isRenameLayoutOpen, setIsRenameLayoutOpen] = useState(false);
-  const {
-    immerDelLayout,
-    immerUpdateLayout,
-    immerDuplicateLayout,
-    getSnapshotAsJSON,
-  } = useLayouts();
+  const { DelLayout, UpdateLayout, DuplicateLayout, getSnapshotAsJSON } =
+    useLayouts();
 
   const downloadOnClick = async () => {
     const downloadsDir = await downloadDir();
@@ -93,7 +89,7 @@ export function LayoutItemMenuButton({
           <MenuItem>
             <Button
               onClick={() => {
-                immerDuplicateLayout(uuid);
+                DuplicateLayout(uuid);
               }}
               className="flex flex-row py-1.5 px-4 items-center data-focus:bg-hover-background cursor-pointer"
             >
@@ -151,7 +147,7 @@ export function LayoutItemMenuButton({
             { name: data.name },
           )}
           onDelete={() => {
-            immerDelLayout(uuid);
+            DelLayout(uuid);
             onDelete(uuid);
           }}
         />
@@ -164,7 +160,7 @@ export function LayoutItemMenuButton({
           }}
           originalName={data.name}
           onChangeName={(newName) => {
-            immerUpdateLayout(uuid, { name: newName });
+            UpdateLayout(uuid, { name: newName, lastUpdated: new Date() });
           }}
         />
       )}

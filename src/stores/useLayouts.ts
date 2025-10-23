@@ -3,15 +3,13 @@ import {
   differenceInCalendarMonths,
   differenceInCalendarYears,
 } from "date-fns";
-import { enableMapSet, produce } from "immer";
 import SuperJSON from "superjson";
 import { v4 as uuidv4 } from "uuid";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { immer } from "zustand/middleware/immer";
 
 import { createSuperJSONStorage } from "./utils/superJsonStorage";
-
-enableMapSet();
 
 export enum LayoutTypeEnum {
   All = "all",
@@ -130,10 +128,10 @@ export interface LayoutsInfo {
 
 interface LayoutsState {
   layouts: Map<string, LayoutsInfo>;
-  immerAddLayout: (name: string, type: LayoutTypeEnum) => void;
-  immerDelLayout: (uuid: string) => void;
-  immerUpdateLayout: (uuid: string, updates: Partial<LayoutsInfo>) => void;
-  immerDuplicateLayout: (uuid: string) => void;
+  AddLayout: (name: string, type: LayoutTypeEnum) => void;
+  DelLayout: (uuid: string) => void;
+  UpdateLayout: (uuid: string, updates: Partial<LayoutsInfo>) => void;
+  DuplicateLayout: (uuid: string) => void;
   getSnapshotAsJSON: (uuid: string) => string;
   loadDataFromJSON: (jsonString: string) => boolean;
   getLayoutTypeDisplay: (type: LayoutTypeEnum) => string;
@@ -145,55 +143,46 @@ interface LayoutsState {
 
 export const useLayouts = create<LayoutsState>()(
   persist(
-    (set, get) => ({
+    immer((set, get) => ({
       layouts: new Map(),
-      immerAddLayout: (name: string, type: LayoutTypeEnum) => {
-        set(
-          produce((state: LayoutsState) => {
-            state.layouts.set(uuidv4(), {
-              name,
-              type,
-              lastUpdated: new Date(),
+      AddLayout: (name: string, type: LayoutTypeEnum) => {
+        set((state: LayoutsState) => {
+          state.layouts.set(uuidv4(), {
+            name,
+            type,
+            lastUpdated: new Date(),
+          });
+        });
+      },
+      DelLayout: (uuid: string) => {
+        set((state: LayoutsState) => {
+          state.layouts.delete(uuid);
+        });
+      },
+      UpdateLayout: (uuid: string, updates: Partial<LayoutsInfo>) => {
+        set((state: LayoutsState) => {
+          const layout = state.layouts.get(uuid);
+          if (layout) {
+            state.layouts.set(uuid, {
+              ...layout,
+              ...updates,
             });
-          }),
-        );
+          }
+        });
       },
-      immerDelLayout: (uuid: string) => {
-        set(
-          produce((state: LayoutsState) => {
-            state.layouts.delete(uuid);
-          }),
-        );
-      },
-      immerUpdateLayout: (uuid: string, updates: Partial<LayoutsInfo>) => {
-        set(
-          produce((state: LayoutsState) => {
-            const layout = state.layouts.get(uuid);
-            if (layout) {
-              state.layouts.set(uuid, {
-                ...layout,
-                ...updates,
-                lastUpdated: new Date(),
-              });
-            }
-          }),
-        );
-      },
-      immerDuplicateLayout: (uuid: string) => {
-        set(
-          produce((state: LayoutsState) => {
-            const layout = state.layouts.get(uuid);
-            if (layout) {
-              state.layouts.set(uuidv4(), {
-                ...layout,
-                name: `${layout.name} copy`,
-                type: LayoutTypeEnum.Local,
-                lastUpdated: new Date(),
-                lastOpened: undefined,
-              });
-            }
-          }),
-        );
+      DuplicateLayout: (uuid: string) => {
+        set((state: LayoutsState) => {
+          const layout = state.layouts.get(uuid);
+          if (layout) {
+            state.layouts.set(uuidv4(), {
+              ...layout,
+              name: `${layout.name} copy`,
+              type: LayoutTypeEnum.Local,
+              lastUpdated: new Date(),
+              lastOpened: undefined,
+            });
+          }
+        });
       },
       getSnapshotAsJSON: (uuid: string) => {
         const layout = get().layouts.get(uuid);
@@ -209,16 +198,14 @@ export const useLayouts = create<LayoutsState>()(
         }
 
         if (parsedLayout) {
-          set(
-            produce((state: LayoutsState) => {
-              state.layouts.set(uuidv4(), {
-                ...parsedLayout,
-                type: LayoutTypeEnum.Local,
-                lastUpdated: new Date(),
-                lastOpened: undefined,
-              });
-            }),
-          );
+          set((state: LayoutsState) => {
+            state.layouts.set(uuidv4(), {
+              ...parsedLayout,
+              type: LayoutTypeEnum.Local,
+              lastUpdated: new Date(),
+              lastOpened: undefined,
+            });
+          });
 
           return true;
         }
@@ -237,7 +224,7 @@ export const useLayouts = create<LayoutsState>()(
         const info = layoutUpdateFiltersMap.get(type);
         return info ? info.filter : layoutUpdateFilters[0].filter;
       },
-    }),
+    })),
     {
       name: "layouts", // unique name
       storage: createSuperJSONStorage(() => localStorage),

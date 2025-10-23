@@ -51,8 +51,8 @@ export function HomeNavButton({
       <Tooltip
         id={tooltipId}
         style={{
-          backgroundColor: `var(--color-background)`,
-          color: `var(--color-foreground)`,
+          backgroundColor: `var(--color-tooltip-background)`,
+          color: `var(--color-tooltip-foreground)`,
         }}
       />
     </div>

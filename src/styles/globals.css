@@ -17,6 +17,8 @@
 
 /* biome-ignore lint/suspicious/noUnknownAtRules: just ignore */
 @theme {
+  --color-tooltip-background: #f8f8f8;
+  --color-tooltip-foreground: #000000;
   --color-dialog-background: #ffffff;
   --color-data-grid-border: #fafafa;
   --color-description: #6f6f6f;
@@ -30,6 +32,8 @@
 }
 
 .dark {
+  --color-tooltip-background: #222222;
+  --color-tooltip-foreground: #ffffff;
   --color-dialog-background: #292929;
   --color-data-grid-border: #1c1c1c;
   --color-description: #a7a7a7;

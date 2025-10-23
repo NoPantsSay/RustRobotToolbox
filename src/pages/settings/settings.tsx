@@ -1,7 +1,6 @@
 import { clsx } from "clsx";
 import { Outlet } from "react-router-dom";
-import { ReturnDashboard } from "./nav/returnDashboard";
-import { UserSettings } from "./nav/userSettings";
+import { SettingsNavigate } from "../../components/navigate/settingsNavigate";
 
 export function Settings() {
   return (
@@ -14,13 +13,12 @@ export function Settings() {
     >
       <div
         className={clsx(
-          "block min-w-[280px] bg-second-background border-r border-border px-3 pt-5 pb-4 text-xs ",
+          "block min-w-[280px] bg-second-background border-r border-border px-3 pt-5 pb-4",
           "not-sm:overflow-y-hide",
           "sm:overflow-y-auto",
         )}
       >
-        <ReturnDashboard />
-        <UserSettings />
+        <SettingsNavigate />
       </div>
 
       <Outlet />

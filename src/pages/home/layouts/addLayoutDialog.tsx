@@ -35,7 +35,7 @@ export function AddLayoutDialog({
   const intl = useIntl();
   const [name, setName] = useState("");
   const [layoutType, setLayoutType] = useState(LayoutTypeEnum.Local);
-  const { getLayoutTypeDisplay, immerAddLayout } = useLayouts();
+  const { getLayoutTypeDisplay, AddLayout } = useLayouts();
 
   const filterLayoutTypes = useMemo(() => {
     return layoutTypes.filter((data) => {
@@ -44,7 +44,7 @@ export function AddLayoutDialog({
   }, []);
 
   const onCreate = () => {
-    immerAddLayout(name, layoutType);
+    AddLayout(name, layoutType);
     onClose();
   };
 

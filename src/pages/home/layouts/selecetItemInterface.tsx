@@ -16,7 +16,7 @@ export function SelecetItemInterface({
 }) {
   const intl = useIntl();
   const [isDeleteLayoutOpen, setIsDeleteLayoutOpen] = useState(false);
-  const { immerDelLayout } = useLayouts();
+  const { DelLayout } = useLayouts();
 
   return (
     <>
@@ -55,7 +55,7 @@ export function SelecetItemInterface({
           )}
           onDelete={() => {
             layoutsCheckedSet.forEach((uuid) => {
-              immerDelLayout(uuid);
+              DelLayout(uuid);
             });
             setLayoutsCheckedSet(new Set<string>());
           }}

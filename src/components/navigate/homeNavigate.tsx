@@ -1,25 +1,55 @@
 import {
+  HiLink,
   HiOutlineBars3,
   HiOutlineBookmark,
+  HiOutlineFolder,
   HiOutlineHome,
   HiOutlineSquares2X2,
   HiOutlineStopCircle,
 } from "react-icons/hi2";
+import { IoSettingsOutline } from "react-icons/io5";
 import { RiLayoutMasonryLine } from "react-icons/ri";
 import { useIntl } from "react-intl";
 import { useLocation, useNavigate } from "react-router-dom";
-import { HomeNavButton } from "../../../components/buttons/homeNavButton";
-import { useLanguage } from "../../../stores/useLanguage";
+import { useLanguage } from "../../stores/useLanguage";
+import { HomeNavButton } from "../buttons/homeNavButton";
 
-export function Browse() {
+export function HomeNavigate() {
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
   const intl = useIntl();
   const { language } = useLanguage();
 
+  const handleOpenFile = () => {
+    alert("open file");
+  };
+
+  const handleOpenConnect = () => {
+    alert("open connect");
+  };
   return (
-    <>
+    <div className="flex flex-col text-xs">
+      <div className="px-4 leading-8">
+        <span className="text-description">
+          {intl
+            .formatMessage({ id: "home.open_data_sources" })
+            .toLocaleUpperCase(language)}
+        </span>
+      </div>
+      <HomeNavButton
+        onClick={handleOpenFile}
+        hotkey="Ctrl+O"
+        label={intl.formatMessage({ id: "home.open_local_files" })}
+        Icon={HiOutlineFolder}
+      />
+      <HomeNavButton
+        onClick={handleOpenConnect}
+        hotkey="Ctrl+Shift+O"
+        label={intl.formatMessage({ id: "home.open_connection" })}
+        Icon={HiLink}
+      />
+      <hr className="mx-4 my-2 border-border" />
       <div className="px-4 leading-8">
         <span className="text-description">
           {intl
@@ -67,6 +97,7 @@ export function Browse() {
         Icon={HiOutlineBars3}
         isActive={currentPath === "/home/timeline"}
       />
+      <hr className="mx-4 my-2 border-border" />
       <HomeNavButton
         onClick={() => {
           navigate("/home/layouts");
@@ -75,6 +106,14 @@ export function Browse() {
         Icon={RiLayoutMasonryLine}
         isActive={currentPath === "/home/layouts"}
       />
-    </>
+      <hr className="mx-4 my-2 border-border" />
+      <HomeNavButton
+        onClick={() => {
+          navigate("/settings");
+        }}
+        label={intl.formatMessage({ id: "setting.settings" })}
+        Icon={IoSettingsOutline}
+      />
+    </div>
   );
 }

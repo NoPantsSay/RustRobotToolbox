@@ -167,8 +167,8 @@ export function General() {
                       place="left"
                       positionStrategy="fixed"
                       style={{
-                        backgroundColor: `var(--color-background)`,
-                        color: `var(--color-foreground)`,
+                        backgroundColor: `var(--color-tooltip-background)`,
+                        color: `var(--color-tooltip-foreground)`,
                       }}
                     />
                   </ListboxOption>

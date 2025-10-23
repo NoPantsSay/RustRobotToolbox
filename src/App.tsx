@@ -1,4 +1,5 @@
 import "./styles/globals.css";
+import { enableMapSet } from "immer";
 import { useEffect } from "react";
 import { IntlProvider } from "react-intl";
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
@@ -18,6 +19,8 @@ import { Settings } from "./pages/settings/settings";
 import { View } from "./pages/view/view";
 import { useLanguage } from "./stores/useLanguage";
 import { ThemeType, useTheme } from "./stores/useTheme";
+
+enableMapSet();
 
 function App() {
   const theme = useTheme((state) => state.theme);

@@ -1,37 +1,32 @@
-import { Button } from "@headlessui/react";
-import clsx from "clsx";
-import { useLocation, useNavigate } from "react-router-dom";
-import Logo from "../../assets/react.svg";
+import { useLocation } from "react-router-dom";
 import { useTitle } from "../../globals/useTitle";
-import { TitleTimeZone } from "./titleTimeZone";
+import { TopAddPlanelButton } from "./topAddPanelButton";
+import { TopHomeButton } from "./topHomeButton";
+import { TopHomeDownButton } from "./topHomeDownButton";
+import { TopLayoutDownButton } from "./topLayoutDownButton";
+import { TopLeftSidebarButton } from "./topLeftSidebarButton";
+import { TopRightSidebarButton } from "./topRightSidebarButton";
+import { TopTimeZone } from "./topTimeZone";
 
 export function TopBar() {
-  const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
 
   const title = useTitle((state) => state.title);
 
-  const isDisableReturnHome = currentPath === "/home/dashboard";
+  const isView = currentPath === "/view";
 
   return (
-    <div
-      data-tauri-drag-region
-      className="flex flex-row min-h-11 justify-between items-center bg-second-background border-b border-border"
-    >
-      <Button
-        disabled={isDisableReturnHome}
-        onClick={() => {
-          navigate("/home/dashboard");
-        }}
-        className={clsx("py-1.5 px-1.5", {
-          "hover:bg-hover-background cursor-pointer": !isDisableReturnHome,
-        })}
-      >
-        <img src={Logo} alt="logo" width={32} height={32} />
-      </Button>
+    <div className="flex flex-row min-h-11 justify-between items-center bg-second-background border-b border-border">
+      <div>{isView ? <TopHomeDownButton /> : <TopHomeButton />}</div>
       <span className="text-center text-sm mx-auto">{title}</span>
-      <TitleTimeZone />
+      <div className="flex flex-row">
+        {isView && <TopLayoutDownButton />}
+        {isView && <TopAddPlanelButton />}
+        {isView && <TopLeftSidebarButton />}
+        {isView && <TopRightSidebarButton />}
+        <TopTimeZone />
+      </div>
     </div>
   );
 }
