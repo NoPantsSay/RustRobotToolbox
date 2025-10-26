@@ -94,7 +94,7 @@ function TimeZonePanel({ close }: { close: () => void }) {
 
   return (
     <>
-      <div className="w-full p-1.5">
+      <div className="w-95 p-1.5">
         <Input
           autoFocus
           className="w-full py-1.5 px-2 text-xs/4.5 outline-none bg-[#0000000f] dark:bg-[#ffffff17]"
@@ -178,8 +178,8 @@ export function TopTimeZone() {
         <span className="text-center text-xs/6">{getGMTShort(timeZone)}</span>
       </PopoverButton>
       <PopoverPanel
-        anchor="bottom end"
-        className="flex flex-col w-95 bg-second-background shadow-lg"
+        anchor={{ to: "bottom end", padding: "8px" }}
+        className="flex flex-col bg-second-background shadow-lg"
       >
         {({ close }) => {
           return <TimeZonePanel close={close} />;

@@ -17,10 +17,10 @@ export function TopBar() {
   const isView = currentPath === "/view";
 
   return (
-    <div className="flex flex-row min-h-11 justify-between items-center bg-second-background border-b border-border">
+    <div className="grid grid-cols-[1fr_auto_1fr] min-h-11 justify-between items-center bg-second-background border-b border-border">
       <div>{isView ? <TopHomeDownButton /> : <TopHomeButton />}</div>
       <span className="text-center text-sm mx-auto">{title}</span>
-      <div className="flex flex-row">
+      <div className="flex flex-row justify-end">
         {isView && <TopLayoutDownButton />}
         {isView && <TopAddPlanelButton />}
         {isView && <TopLeftSidebarButton />}

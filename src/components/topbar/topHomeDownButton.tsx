@@ -16,8 +16,8 @@ export function TopHomeDownButton() {
         <HiChevronDown size={12} />
       </PopoverButton>
       <PopoverPanel
-        anchor="bottom end"
-        className="flex flex-col w-70 py-2 bg-second-background shadow-lg"
+        anchor={{ to: "bottom end", padding: "8px" }}
+        className="flex flex-col w-75 py-2 bg-second-background shadow-lg"
       >
         <HomeNavigate />
       </PopoverPanel>
