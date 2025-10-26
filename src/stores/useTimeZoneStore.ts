@@ -3,6 +3,7 @@ import { formatInTimeZone } from "date-fns-tz";
 import { Decimal } from "decimal.js";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import { defaultTauriStorage } from "./utils/tauriStoreState";
 
 export const detectedTimeZone =
   Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -78,7 +79,7 @@ export const useTimeZoneStore = create<timeZoneState>()(
     }),
     {
       name: "timeZone", // unique name
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => defaultTauriStorage),
       merge: (persistedState, currentState) => {
         let timeZone = (persistedState as timeZoneState).timeZone;
         if ((persistedState as timeZoneState).isDetected) {

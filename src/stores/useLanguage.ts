@@ -5,6 +5,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import enMessages from "../locales/en.json";
 import zhMessages from "../locales/zh.json";
+import { defaultTauriStorage } from "./utils/tauriStoreState";
 
 const messages = new Map<string, Record<string, string>>([
   ["en", flatten(enMessages)],
@@ -40,7 +41,7 @@ export const useLanguage = create<LanguageState>()(
     }),
     {
       name: "language", // unique name
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => defaultTauriStorage),
       onRehydrateStorage: () => (state) => {
         console.log("加载语言", state);
         setDefaultLocal(state?.language || "zh");

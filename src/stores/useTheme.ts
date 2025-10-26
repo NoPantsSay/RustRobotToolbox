@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import { defaultTauriStorage } from "./utils/tauriStoreState";
 
 export enum ThemeType {
   LIGHT = "light",
@@ -22,7 +23,7 @@ export const useTheme = create<themeState>()(
     }),
     {
       name: "theme", // unique name
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => defaultTauriStorage),
     },
   ),
 );

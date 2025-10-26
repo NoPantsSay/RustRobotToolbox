@@ -8,8 +8,8 @@ import { v4 as uuidv4 } from "uuid";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
-
 import { createSuperJSONStorage } from "./utils/superJsonStorage";
+import { defaultTauriStorage } from "./utils/tauriStoreState";
 
 export enum LayoutTypeEnum {
   All = "all",
@@ -227,7 +227,7 @@ export const useLayouts = create<LayoutsState>()(
     })),
     {
       name: "layouts", // unique name
-      storage: createSuperJSONStorage(() => localStorage),
+      storage: createSuperJSONStorage(() => defaultTauriStorage),
     },
   ),
 );
