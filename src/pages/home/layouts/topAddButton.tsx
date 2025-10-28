@@ -5,36 +5,23 @@ import {
   MenuItem,
   MenuItems,
 } from "@headlessui/react";
-import { downloadDir } from "@tauri-apps/api/path";
-import { open } from "@tauri-apps/plugin-dialog";
-import { readTextFile } from "@tauri-apps/plugin-fs";
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { PiDownload } from "react-icons/pi";
 import { RiLayoutMasonryLine } from "react-icons/ri";
 import { FormattedMessage } from "react-intl";
+import { AddLayoutDialog } from "../../../components/dialogs/addLayoutDialog";
+import { importLayout } from "../../../components/utils/importLayout";
 import { useLayouts } from "../../../stores/useLayouts";
-import { AddLayoutDialog } from "./addLayoutDialog";
 
 export function TopAddButton() {
   const [isNewLayoutOpen, setIsNewLayoutOpen] = useState(false);
 
   const { loadDataFromJSON } = useLayouts();
 
-  const importOnClick = async () => {
-    const downloadsDir = await downloadDir();
-    const path = await open({
-      defaultPath: downloadsDir,
-      filters: [
-        {
-          name: "json",
-          extensions: ["json"],
-        },
-      ],
-    });
-    // console.log(path);
-    if (path) {
-      const str = await readTextFile(path);
+  const handleImportLayout = async () => {
+    const str = await importLayout();
+    if (str) {
       loadDataFromJSON(str);
     }
   };
@@ -69,7 +56,7 @@ export function TopAddButton() {
           <MenuItem>
             <Button
               onClick={() => {
-                void importOnClick();
+                void handleImportLayout();
               }}
               className="flex flex-row py-1 px-3 items-center data-focus:bg-hover-background cursor-pointer"
             >

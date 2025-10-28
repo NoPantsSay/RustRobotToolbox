@@ -93,11 +93,11 @@ function TimeZonePanel({ close }: { close: () => void }) {
   });
 
   return (
-    <>
-      <div className="w-95 p-1.5">
+    <div className="w-95">
+      <div className="w-full p-1.5">
         <Input
           autoFocus
-          className="w-full py-1.5 px-2 text-xs/4.5 outline-none bg-[#0000000f] dark:bg-[#ffffff17]"
+          className="w-full py-1.5 px-2 text-xs/4.5 outline-none bg-input-background"
           placeholder={`current:${timeZone}`}
           onChange={(event) => {
             setQuery(event.target.value);
@@ -130,6 +130,7 @@ function TimeZonePanel({ close }: { close: () => void }) {
             } else if (type === "none") {
               return (
                 <div
+                  key={virtualItem.key}
                   className={clsx(
                     "absolute top-0 left-0 h-8 w-full",
                     " items-center px-4 py-1.5 text-xs/5 text-description",
@@ -142,6 +143,7 @@ function TimeZonePanel({ close }: { close: () => void }) {
             } else {
               return (
                 <Button
+                  key={virtualItem.key}
                   className={clsx(
                     "absolute top-0 left-0 h-8 w-full",
                     "flex cursor-pointer justify-between items-center px-4 py-1.5 text-xs/5",
@@ -164,7 +166,7 @@ function TimeZonePanel({ close }: { close: () => void }) {
           })}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

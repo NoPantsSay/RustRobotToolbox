@@ -127,13 +127,16 @@ export interface LayoutsInfo {
 }
 
 interface LayoutsState {
+  recentlayouts: string[];
   layouts: Map<string, LayoutsInfo>;
-  AddLayout: (name: string, type: LayoutTypeEnum) => void;
-  DelLayout: (uuid: string) => void;
-  UpdateLayout: (uuid: string, updates: Partial<LayoutsInfo>) => void;
-  DuplicateLayout: (uuid: string) => void;
+  addLayout: (name: string, type: LayoutTypeEnum) => string;
+  delLayout: (uuid: string) => void;
+  updateLayout: (uuid: string, updates: Partial<LayoutsInfo>) => void;
+  duplicateLayout: (uuid: string) => void;
   getSnapshotAsJSON: (uuid: string) => string;
-  loadDataFromJSON: (jsonString: string) => boolean;
+  loadDataFromJSON: (jsonString: string) => string | null;
+  pushRecentLayout: (uuid: string) => void;
+  getRecentLayouts: () => [string, LayoutsInfo][];
   getLayoutTypeDisplay: (type: LayoutTypeEnum) => string;
   getlayoutUpdateFilterDisplay: (type: LayoutUpdateFilterEnum) => string;
   getlayoutUpdateFilterFilter: (
@@ -144,22 +147,26 @@ interface LayoutsState {
 export const useLayouts = create<LayoutsState>()(
   persist(
     immer((set, get) => ({
+      recentlayouts: [],
       layouts: new Map(),
-      AddLayout: (name: string, type: LayoutTypeEnum) => {
+      addLayout: (name: string, type: LayoutTypeEnum) => {
+        const uuid = uuidv4();
         set((state: LayoutsState) => {
-          state.layouts.set(uuidv4(), {
+          state.layouts.set(uuid, {
             name,
             type,
             lastUpdated: new Date(),
           });
         });
+        return uuid;
       },
-      DelLayout: (uuid: string) => {
+      delLayout: (uuid: string) => {
         set((state: LayoutsState) => {
           state.layouts.delete(uuid);
+          state.recentlayouts = state.recentlayouts.filter((id) => id !== uuid);
         });
       },
-      UpdateLayout: (uuid: string, updates: Partial<LayoutsInfo>) => {
+      updateLayout: (uuid: string, updates: Partial<LayoutsInfo>) => {
         set((state: LayoutsState) => {
           const layout = state.layouts.get(uuid);
           if (layout) {
@@ -170,7 +177,7 @@ export const useLayouts = create<LayoutsState>()(
           }
         });
       },
-      DuplicateLayout: (uuid: string) => {
+      duplicateLayout: (uuid: string) => {
         set((state: LayoutsState) => {
           const layout = state.layouts.get(uuid);
           if (layout) {
@@ -198,8 +205,9 @@ export const useLayouts = create<LayoutsState>()(
         }
 
         if (parsedLayout) {
+          const uuid = uuidv4();
           set((state: LayoutsState) => {
-            state.layouts.set(uuidv4(), {
+            state.layouts.set(uuid, {
               ...parsedLayout,
               type: LayoutTypeEnum.Local,
               lastUpdated: new Date(),
@@ -207,10 +215,30 @@ export const useLayouts = create<LayoutsState>()(
             });
           });
 
-          return true;
+          return uuid;
         }
 
-        return false;
+        return null;
+      },
+      pushRecentLayout: (uuid: string) => {
+        set((state: LayoutsState) => {
+          state.recentlayouts = state.recentlayouts.filter((id) => id !== uuid);
+          state.recentlayouts.unshift(uuid);
+          if (state.recentlayouts.length > 2) {
+            state.recentlayouts.pop();
+          }
+        });
+      },
+      getRecentLayouts: () => {
+        const recentLayouts: [string, LayoutsInfo][] = [];
+        const { recentlayouts, layouts } = get();
+        recentlayouts.forEach((uuid) => {
+          const layout = layouts.get(uuid);
+          if (layout) {
+            recentLayouts.push([uuid, layout]);
+          }
+        });
+        return recentLayouts;
       },
       getLayoutTypeDisplay: (type: LayoutTypeEnum) => {
         const info = layoutTypesMap.get(type);

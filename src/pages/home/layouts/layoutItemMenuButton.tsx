@@ -12,13 +12,13 @@ import { clsx } from "clsx";
 import { useState } from "react";
 import { HiEllipsisVertical } from "react-icons/hi2";
 import { FormattedMessage, useIntl } from "react-intl";
+import { DeleteLayoutDialog } from "../../../components/dialogs/deleteLayoutDialog";
+import { RenameLayoutDialog } from "../../../components/dialogs/renameLayoutDialog";
 import {
   type LayoutsInfo,
   LayoutTypeEnum,
   useLayouts,
 } from "../../../stores/useLayouts";
-import { DeleteLayoutDialog } from "./deleteLayoutDialog";
-import { RenameLayoutDialog } from "./renameLayoutDialog";
 
 export function LayoutItemMenuButton({
   uuid,
@@ -32,7 +32,7 @@ export function LayoutItemMenuButton({
   const intl = useIntl();
   const [isDeleteLayoutOpen, setIsDeleteLayoutOpen] = useState(false);
   const [isRenameLayoutOpen, setIsRenameLayoutOpen] = useState(false);
-  const { DelLayout, UpdateLayout, DuplicateLayout, getSnapshotAsJSON } =
+  const { delLayout, updateLayout, duplicateLayout, getSnapshotAsJSON } =
     useLayouts();
 
   const downloadOnClick = async () => {
@@ -89,7 +89,7 @@ export function LayoutItemMenuButton({
           <MenuItem>
             <Button
               onClick={() => {
-                DuplicateLayout(uuid);
+                duplicateLayout(uuid);
               }}
               className="flex flex-row py-1.5 px-4 items-center data-focus:bg-hover-background cursor-pointer"
             >
@@ -147,7 +147,7 @@ export function LayoutItemMenuButton({
             { name: data.name },
           )}
           onDelete={() => {
-            DelLayout(uuid);
+            delLayout(uuid);
             onDelete(uuid);
           }}
         />
@@ -160,7 +160,7 @@ export function LayoutItemMenuButton({
           }}
           originalName={data.name}
           onChangeName={(newName) => {
-            UpdateLayout(uuid, { name: newName, lastUpdated: new Date() });
+            updateLayout(uuid, { name: newName, lastUpdated: new Date() });
           }}
         />
       )}

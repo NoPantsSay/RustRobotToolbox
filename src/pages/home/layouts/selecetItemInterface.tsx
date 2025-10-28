@@ -4,8 +4,8 @@ import { useState } from "react";
 import { IoTrashOutline } from "react-icons/io5";
 import { FormattedMessage, useIntl } from "react-intl";
 import type { Updater } from "use-immer";
+import { DeleteLayoutDialog } from "../../../components/dialogs/deleteLayoutDialog";
 import { useLayouts } from "../../../stores/useLayouts";
-import { DeleteLayoutDialog } from "./deleteLayoutDialog";
 
 export function SelecetItemInterface({
   layoutsCheckedSet,
@@ -16,7 +16,7 @@ export function SelecetItemInterface({
 }) {
   const intl = useIntl();
   const [isDeleteLayoutOpen, setIsDeleteLayoutOpen] = useState(false);
-  const { DelLayout } = useLayouts();
+  const { delLayout } = useLayouts();
 
   return (
     <>
@@ -55,7 +55,7 @@ export function SelecetItemInterface({
           )}
           onDelete={() => {
             layoutsCheckedSet.forEach((uuid) => {
-              DelLayout(uuid);
+              delLayout(uuid);
             });
             setLayoutsCheckedSet(new Set<string>());
           }}

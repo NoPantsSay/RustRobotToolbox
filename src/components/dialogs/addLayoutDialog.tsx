@@ -18,24 +18,24 @@ import { useHotkeys } from "react-hotkeys-hook";
 import { MdClose } from "react-icons/md";
 import { FormattedMessage, useIntl } from "react-intl";
 import { titleCase } from "title-case";
-import { UpDownIcon } from "../../../components/icons/upDownIcon";
 import {
   LayoutTypeEnum,
   layoutTypes,
   useLayouts,
-} from "../../../stores/useLayouts";
+} from "../../stores/useLayouts";
+import { UpDownIcon } from "../icons/upDownIcon";
 
 export function AddLayoutDialog({
   open,
   onClose,
 }: {
   open: boolean;
-  onClose: () => void;
+  onClose: (uuid?: string) => void;
 }) {
   const intl = useIntl();
   const [name, setName] = useState("");
   const [layoutType, setLayoutType] = useState(LayoutTypeEnum.Local);
-  const { getLayoutTypeDisplay, AddLayout } = useLayouts();
+  const { getLayoutTypeDisplay, addLayout } = useLayouts();
 
   const filterLayoutTypes = useMemo(() => {
     return layoutTypes.filter((data) => {
@@ -44,8 +44,8 @@ export function AddLayoutDialog({
   }, []);
 
   const onCreate = () => {
-    AddLayout(name, layoutType);
-    onClose();
+    const uuid = addLayout(name, layoutType);
+    onClose(uuid);
   };
 
   useHotkeys("enter", onCreate, { enableOnFormTags: ["INPUT"] });
@@ -53,7 +53,9 @@ export function AddLayoutDialog({
   return (
     <Dialog
       open={open}
-      onClose={onClose}
+      onClose={() => {
+        onClose();
+      }}
       className="relative z-10 outline-none"
     >
       <div className="fixed inset-0 z-10 flex items-center justify-center p-12">
@@ -64,7 +66,12 @@ export function AddLayoutDialog({
                 intl.formatMessage({ id: "layouts.create_new_layout" }),
               )}
             </DialogTitle>
-            <Button onClick={onClose} className="hover:bg-hover-background p-2">
+            <Button
+              onClick={() => {
+                onClose();
+              }}
+              className="hover:bg-hover-background p-2"
+            >
               <MdClose size={16} />
             </Button>
           </div>
@@ -138,7 +145,9 @@ export function AddLayoutDialog({
           </Fieldset>
           <div className="flex px-6 pb-6 gap-4 justify-end">
             <Button
-              onClick={onClose}
+              onClick={() => {
+                onClose();
+              }}
               className={
                 "outline-none text-sm items-center py-1 px-4 cursor-pointer border border-foreground hover:bg-hover-background"
               }

@@ -7,14 +7,15 @@ import { useLayouts } from "../../../stores/useLayouts";
 export function LayoutItemOpenButton({ uuid }: { uuid: string }) {
   const navigate = useNavigate();
 
-  const { UpdateLayout } = useLayouts();
+  const { updateLayout, pushRecentLayout } = useLayouts();
 
   return (
     <Button
       onClick={(event) => {
         event.stopPropagation();
         navigate("/view");
-        UpdateLayout(uuid, { lastOpened: new Date() });
+        updateLayout(uuid, { lastOpened: new Date() });
+        pushRecentLayout(uuid);
       }}
       className={clsx(
         "outline-none border items-center cursor-pointer",
