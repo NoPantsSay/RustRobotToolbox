@@ -34,23 +34,26 @@ export function SettingsNavigate() {
         onClick={() => {
           navigate("/settings/general");
         }}
-        label={intl.formatMessage({ id: "setting.general" })}
         isActive={currentPath === "/settings/general"}
-      />
+      >
+        <FormattedMessage id={"setting.general"} />
+      </HomeNavButton>
       <HomeNavButton
         onClick={() => {
           navigate("/settings/extensions");
         }}
-        label={intl.formatMessage({ id: "setting.extensions" })}
         isActive={currentPath === "/settings/extensions"}
-      />
+      >
+        <FormattedMessage id={"setting.extensions"} />
+      </HomeNavButton>
       <HomeNavButton
         onClick={() => {
           navigate("/settings/desktop");
         }}
-        label={intl.formatMessage({ id: "setting.desktop" })}
         isActive={currentPath === "/settings/desktop"}
-      />
+      >
+        <FormattedMessage id={"setting.desktop"} />
+      </HomeNavButton>
     </div>
   );
 }

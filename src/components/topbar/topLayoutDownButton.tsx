@@ -8,14 +8,13 @@ import {
 import { useVirtualizer } from "@tanstack/react-virtual";
 import clsx from "clsx";
 import { useEffectEvent, useId, useMemo, useRef, useState } from "react";
-import ReactDOM from "react-dom";
 import type { IconType } from "react-icons";
 import { HiChevronDown, HiChevronRight } from "react-icons/hi2";
 import { RiLayoutMasonryLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
-import { Tooltip } from "react-tooltip";
 import { LayoutTypeEnum, useLayouts } from "../../stores/useLayouts";
 import { AddLayoutDialog } from "../dialogs/addLayoutDialog";
+import { TooltipWithPortal } from "../tooltips/tooltipWithPortal";
 import { importLayout } from "../utils/importLayout";
 
 type TopLayoutDownItem = {
@@ -26,22 +25,6 @@ type TopLayoutDownItem = {
   Icon?: IconType;
   onclick?: () => void;
 };
-
-function TooltipWithPortal({ id }: { id: string }) {
-  return ReactDOM.createPortal(
-    <Tooltip
-      id={id}
-      style={{
-        fontSize: "12px",
-        lineHeight: "1.333",
-        backgroundColor: `var(--color-tooltip-background)`,
-        color: `var(--color-tooltip-foreground)`,
-        zIndex: 1000,
-      }}
-    />,
-    document.body,
-  );
-}
 
 function TopLayoutDownPanel({
   close,

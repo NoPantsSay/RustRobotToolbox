@@ -1,3 +1,5 @@
+import { useId } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
 import {
   HiLink,
   HiOutlineBars3,
@@ -9,10 +11,14 @@ import {
 } from "react-icons/hi2";
 import { IoSettingsOutline } from "react-icons/io5";
 import { RiLayoutMasonryLine } from "react-icons/ri";
-import { useIntl } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useUserHotkey } from "../../globals/useUserHotkey";
 import { useLanguage } from "../../stores/useLanguage";
 import { HomeNavButton } from "../buttons/homeNavButton";
+import { TooltipWithPortal } from "../tooltips/tooltipWithPortal";
+import { openConnect } from "../utils/openConnect";
+import { openFile } from "../utils/openFile";
 
 export function HomeNavigate() {
   const navigate = useNavigate();
@@ -20,100 +26,130 @@ export function HomeNavigate() {
   const currentPath = location.pathname;
   const intl = useIntl();
   const { language } = useLanguage();
+  const tooltipId = useId();
+  const { openFileHotkey, openConnectHotkey } = useUserHotkey();
 
-  const handleOpenFile = () => {
-    alert("open file");
-  };
+  useHotkeys(
+    openFileHotkey,
+    (e) => {
+      e.preventDefault();
+      openFile();
+    },
+    { enableOnFormTags: true },
+  );
 
-  const handleOpenConnect = () => {
-    alert("open connect");
-  };
+  useHotkeys(
+    openConnectHotkey,
+    (e) => {
+      e.preventDefault();
+      openConnect();
+    },
+    { enableOnFormTags: true },
+  );
+
   return (
-    <div className="flex flex-col text-xs">
-      <div className="px-4 leading-8">
-        <span className="text-description">
-          {intl
-            .formatMessage({ id: "home.open_data_sources" })
-            .toLocaleUpperCase(language)}
-        </span>
+    <>
+      <div className="flex flex-col text-xs">
+        <div className="px-4 leading-8">
+          <span className="text-description">
+            {intl
+              .formatMessage({ id: "home.open_data_sources" })
+              .toLocaleUpperCase(language)}
+          </span>
+        </div>
+        <HomeNavButton
+          onClick={openFile}
+          data-tooltip-id={tooltipId}
+          data-tooltip-content={openFileHotkey}
+          data-tooltip-place="right"
+        >
+          <HiOutlineFolder size={20} className="ml-2 text-scheme" />
+          <FormattedMessage id={"home.open_local_files"} />
+        </HomeNavButton>
+        <HomeNavButton
+          onClick={openConnect}
+          data-tooltip-id={tooltipId}
+          data-tooltip-content={openConnectHotkey}
+          data-tooltip-place="right"
+        >
+          <HiLink size={20} className="ml-2 text-scheme" />
+          <FormattedMessage id={"home.open_connection"} />
+        </HomeNavButton>
+        <hr className="mx-4 my-2 border-border" />
+        <div className="px-4 leading-8">
+          <span className="text-description">
+            {intl
+              .formatMessage({ id: "home.browse" })
+              .toLocaleUpperCase(language)}
+          </span>
+        </div>
+        <HomeNavButton
+          onClick={() => {
+            navigate("/home/dashboard");
+          }}
+          isActive={currentPath === "/home/dashboard"}
+        >
+          <HiOutlineHome size={20} className="ml-2 text-scheme" />
+          <FormattedMessage id={"home.dashboard"} />
+        </HomeNavButton>
+        <HomeNavButton
+          onClick={() => {
+            navigate("/home/devices");
+          }}
+          isActive={currentPath === "/home/devices"}
+        >
+          <HiOutlineSquares2X2 size={20} className="ml-2 text-scheme" />
+          <FormattedMessage id={"home.devices"} />
+        </HomeNavButton>
+        <HomeNavButton
+          onClick={() => {
+            navigate("/home/recordings");
+          }}
+          isActive={currentPath === "/home/recordings"}
+        >
+          <HiOutlineStopCircle size={20} className="ml-2 text-scheme" />
+          <FormattedMessage id={"home.recordings"} />
+        </HomeNavButton>
+        <HomeNavButton
+          onClick={() => {
+            navigate("/home/events");
+          }}
+          isActive={currentPath === "/home/events"}
+        >
+          <HiOutlineBookmark size={20} className="ml-2 text-scheme" />
+          <FormattedMessage id={"home.events"} />
+        </HomeNavButton>
+        <HomeNavButton
+          onClick={() => {
+            navigate("/home/timeline");
+          }}
+          isActive={currentPath === "/home/timeline"}
+        >
+          <HiOutlineBars3 size={20} className="ml-2 text-scheme" />
+          <FormattedMessage id={"home.timeline"} />
+        </HomeNavButton>
+        <hr className="mx-4 my-2 border-border" />
+        <HomeNavButton
+          onClick={() => {
+            navigate("/home/layouts");
+          }}
+          isActive={currentPath === "/home/layouts"}
+        >
+          <RiLayoutMasonryLine size={20} className="ml-2 text-scheme" />
+          <FormattedMessage id={"home.layouts"} />
+        </HomeNavButton>
+        <hr className="mx-4 my-2 border-border" />
+        <HomeNavButton
+          onClick={() => {
+            navigate("/settings");
+          }}
+          isActive={currentPath === "/settings"}
+        >
+          <IoSettingsOutline size={20} className="ml-2 text-scheme" />
+          <FormattedMessage id={"setting.settings"} />
+        </HomeNavButton>
       </div>
-      <HomeNavButton
-        onClick={handleOpenFile}
-        hotkey="Ctrl+O"
-        label={intl.formatMessage({ id: "home.open_local_files" })}
-        Icon={HiOutlineFolder}
-      />
-      <HomeNavButton
-        onClick={handleOpenConnect}
-        hotkey="Ctrl+Shift+O"
-        label={intl.formatMessage({ id: "home.open_connection" })}
-        Icon={HiLink}
-      />
-      <hr className="mx-4 my-2 border-border" />
-      <div className="px-4 leading-8">
-        <span className="text-description">
-          {intl
-            .formatMessage({ id: "home.browse" })
-            .toLocaleUpperCase(language)}
-        </span>
-      </div>
-      <HomeNavButton
-        onClick={() => {
-          navigate("/home/dashboard");
-        }}
-        label={intl.formatMessage({ id: "home.dashboard" })}
-        Icon={HiOutlineHome}
-        isActive={currentPath === "/home/dashboard"}
-      />
-      <HomeNavButton
-        onClick={() => {
-          navigate("/home/devices");
-        }}
-        label={intl.formatMessage({ id: "home.devices" })}
-        Icon={HiOutlineSquares2X2}
-        isActive={currentPath === "/home/devices"}
-      />
-      <HomeNavButton
-        onClick={() => {
-          navigate("/home/recordings");
-        }}
-        label={intl.formatMessage({ id: "home.recordings" })}
-        Icon={HiOutlineStopCircle}
-        isActive={currentPath === "/home/recordings"}
-      />
-      <HomeNavButton
-        onClick={() => {
-          navigate("/home/events");
-        }}
-        label={intl.formatMessage({ id: "home.events" })}
-        Icon={HiOutlineBookmark}
-        isActive={currentPath === "/home/events"}
-      />
-      <HomeNavButton
-        onClick={() => {
-          navigate("/home/timeline");
-        }}
-        label={intl.formatMessage({ id: "home.timeline" })}
-        Icon={HiOutlineBars3}
-        isActive={currentPath === "/home/timeline"}
-      />
-      <hr className="mx-4 my-2 border-border" />
-      <HomeNavButton
-        onClick={() => {
-          navigate("/home/layouts");
-        }}
-        label={intl.formatMessage({ id: "home.layouts" })}
-        Icon={RiLayoutMasonryLine}
-        isActive={currentPath === "/home/layouts"}
-      />
-      <hr className="mx-4 my-2 border-border" />
-      <HomeNavButton
-        onClick={() => {
-          navigate("/settings");
-        }}
-        label={intl.formatMessage({ id: "setting.settings" })}
-        Icon={IoSettingsOutline}
-      />
-    </div>
+      <TooltipWithPortal id={tooltipId} />
+    </>
   );
 }
