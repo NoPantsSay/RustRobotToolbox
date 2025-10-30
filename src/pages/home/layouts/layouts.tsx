@@ -76,8 +76,8 @@ export function Layouts() {
     layoutsSort === SortTypeEnum.OPEN_UP ? HiArrowUp : HiArrowDown;
 
   const filteredLayouts = useMemo(() => {
-    return Array.from(layouts.entries())
-      .filter(([_uuid, data]) => {
+    return Array.from(layouts.values())
+      .filter((data) => {
         if (inputValue.length > 0 && !data.name.includes(inputValue)) {
           return false;
         }
@@ -97,7 +97,7 @@ export function Layouts() {
 
         return true;
       })
-      .sort(([_uuid_left, data_left], [_uuid_right, data_right]) => {
+      .sort((data_left, data_right) => {
         if (layoutsSort === SortTypeEnum.NAME_UP) {
           return data_left.name.localeCompare(data_right.name);
         } else if (layoutsSort === SortTypeEnum.NAME_DOWN) {
@@ -172,8 +172,8 @@ export function Layouts() {
 
     if (!checked) {
       const newSet = new Set<string>();
-      filteredLayouts.forEach(([key, _value]) => {
-        newSet.add(key);
+      filteredLayouts.forEach((value) => {
+        newSet.add(value.uuid);
       });
       setLayoutsCheckedSet(newSet);
     } else {
@@ -440,14 +440,14 @@ export function Layouts() {
               <div className="h-full px-2.5 border-b border-border" />
               <div className="h-full px-2.5 border-b border-border" />
             </div>
-            {filteredLayouts.map(([uuid, data], index) => (
+            {filteredLayouts.map((data, index) => (
               // biome-ignore lint/a11y/noStaticElementInteractions: just ignore
               // biome-ignore lint/a11y/useKeyWithClickEvents:  just ignore
               <div
                 onClick={() => {
-                  itemToggle(uuid);
+                  itemToggle(data.uuid);
                 }}
-                key={uuid}
+                key={data.uuid}
                 className={clsx(
                   "group grid grid-cols-[40px_minmax(150px,_1fr)_140px_120px_120px_minmax(90px,_1fr)_60px] h-10 items-center",
                 )}
@@ -455,7 +455,7 @@ export function Layouts() {
                 <div
                   className={clsx(
                     "group flex h-full items-center justify-center ",
-                    layoutsCheckedSet.has(uuid)
+                    layoutsCheckedSet.has(data.uuid)
                       ? "bg-scheme-background group-hover:bg-scheme-hover-background"
                       : "group-hover:bg-hover-background",
                     {
@@ -466,16 +466,16 @@ export function Layouts() {
                   <Button
                     onClick={(event) => {
                       event.stopPropagation();
-                      itemToggle(uuid);
+                      itemToggle(data.uuid);
                     }}
                     className={clsx(
                       "size-5 rounded-xs outline-none items-center cursor-pointer",
-                      layoutsCheckedSet.has(uuid)
+                      layoutsCheckedSet.has(data.uuid)
                         ? "text-scheme "
                         : "text-description",
                     )}
                   >
-                    {layoutsCheckedSet.has(uuid) ? (
+                    {layoutsCheckedSet.has(data.uuid) ? (
                       <MdCheckBox size={20} />
                     ) : (
                       <MdCheckBoxOutlineBlank
@@ -488,7 +488,7 @@ export function Layouts() {
                 <div
                   className={clsx(
                     "flex h-full px-2.5 items-center",
-                    layoutsCheckedSet.has(uuid)
+                    layoutsCheckedSet.has(data.uuid)
                       ? "bg-scheme-background group-hover:bg-scheme-hover-background"
                       : "group-hover:bg-hover-background",
                     {
@@ -501,7 +501,7 @@ export function Layouts() {
                 <div
                   className={clsx(
                     "flex h-full px-2.5 items-center",
-                    layoutsCheckedSet.has(uuid)
+                    layoutsCheckedSet.has(data.uuid)
                       ? "bg-scheme-background group-hover:bg-scheme-hover-background"
                       : "group-hover:bg-hover-background",
                     {
@@ -516,7 +516,7 @@ export function Layouts() {
                 <div
                   className={clsx(
                     "flex h-full px-2.5 items-center",
-                    layoutsCheckedSet.has(uuid)
+                    layoutsCheckedSet.has(data.uuid)
                       ? "bg-scheme-background group-hover:bg-scheme-hover-background"
                       : "group-hover:bg-hover-background",
                     {
@@ -526,7 +526,7 @@ export function Layouts() {
                 >
                   <span
                     className="text-xs text-description"
-                    data-tooltip-id={`lastUpdated:${uuid}`}
+                    data-tooltip-id={`lastUpdated:${data.uuid}`}
                     data-tooltip-content={getDateFormat(data.lastUpdated)}
                     data-tooltip-place="bottom"
                   >
@@ -536,7 +536,7 @@ export function Layouts() {
                   </span>
 
                   <Tooltip
-                    id={`lastUpdated:${uuid}`}
+                    id={`lastUpdated:${data.uuid}`}
                     style={{
                       fontSize: "12px",
                       lineHeight: "1.333",
@@ -548,7 +548,7 @@ export function Layouts() {
                 <div
                   className={clsx(
                     "flex h-full px-2.5 items-center",
-                    layoutsCheckedSet.has(uuid)
+                    layoutsCheckedSet.has(data.uuid)
                       ? "bg-scheme-background group-hover:bg-scheme-hover-background"
                       : "group-hover:bg-hover-background",
                     {
@@ -560,7 +560,7 @@ export function Layouts() {
                     <>
                       <span
                         className="text-xs text-description"
-                        data-tooltip-id={`lastOpened:${uuid}`}
+                        data-tooltip-id={`lastOpened:${data.uuid}`}
                         data-tooltip-content={getDateFormat(data.lastOpened)}
                         data-tooltip-place="bottom"
                       >
@@ -570,7 +570,7 @@ export function Layouts() {
                       </span>
 
                       <Tooltip
-                        id={`lastOpened:${uuid}`}
+                        id={`lastOpened:${data.uuid}`}
                         style={{
                           fontSize: "12px",
                           lineHeight: "1.333",
@@ -584,7 +584,7 @@ export function Layouts() {
                 <div
                   className={clsx(
                     "flex h-full px-2.5 items-center justify-end",
-                    layoutsCheckedSet.has(uuid)
+                    layoutsCheckedSet.has(data.uuid)
                       ? "bg-scheme-background group-hover:bg-scheme-hover-background"
                       : "group-hover:bg-hover-background",
                     {
@@ -592,12 +592,12 @@ export function Layouts() {
                     },
                   )}
                 >
-                  <LayoutItemOpenButton uuid={uuid} />
+                  <LayoutItemOpenButton uuid={data.uuid} />
                 </div>
                 <div
                   className={clsx(
                     "flex h-full px-2.5 items-center justify-center",
-                    layoutsCheckedSet.has(uuid)
+                    layoutsCheckedSet.has(data.uuid)
                       ? "bg-scheme-background group-hover:bg-scheme-hover-background"
                       : "group-hover:bg-hover-background",
                     {
@@ -606,7 +606,7 @@ export function Layouts() {
                   )}
                 >
                   <LayoutItemMenuButton
-                    uuid={uuid}
+                    uuid={data.uuid}
                     data={data}
                     onDelete={itemDelete}
                   />

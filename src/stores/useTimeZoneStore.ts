@@ -81,16 +81,14 @@ export const useTimeZoneStore = create<timeZoneState>()(
       name: "timeZone", // unique name
       storage: createJSONStorage(() => defaultTauriStorage),
       merge: (persistedState, currentState) => {
-        let timeZone = (persistedState as timeZoneState).timeZone;
         if ((persistedState as timeZoneState).isDetected) {
           console.log("重置当前时区为检测时间");
-          timeZone = detectedTimeZone;
+          (persistedState as timeZoneState).timeZone = detectedTimeZone;
         }
 
         return {
           ...currentState,
           ...(persistedState as timeZoneState),
-          timeZone: timeZone,
         };
       },
     },

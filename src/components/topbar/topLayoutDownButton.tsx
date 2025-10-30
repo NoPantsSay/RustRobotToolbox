@@ -49,7 +49,8 @@ function TopLayoutDownPanel({
   const recentLayouts = getRecentLayouts();
   const tooltipId = useId();
 
-  const currentLayoutUUID = recentLayouts.length > 0 ? recentLayouts[0][0] : "";
+  const currentLayoutUUID =
+    recentLayouts.length > 0 ? recentLayouts[0].uuid : "";
 
   const handleImportLayout = useEffectEvent(async () => {
     const str = await importLayout();
@@ -103,11 +104,11 @@ function TopLayoutDownPanel({
       });
 
       if (isRecentExpend) {
-        recentLayouts.forEach(([uuid, info]) => {
+        recentLayouts.forEach((info) => {
           result.push({
             type: "item",
             name: info.name,
-            uuid,
+            uuid: info.uuid,
             layoutType: info.type,
           });
         });
@@ -222,10 +223,7 @@ function TopLayoutDownPanel({
             value={query}
           />
         </div>
-        <div
-          ref={parentRef}
-          className="w-full min-h-8 max-h-80 overflow-y-auto"
-        >
+        <div ref={parentRef} className="w-full min-h-8 overflow-y-auto">
           <div
             className={`relative w-full`}
             style={{ height: `${rowVirtualizer.getTotalSize()}px` }}
@@ -336,7 +334,7 @@ export function TopLayoutDownButton() {
   const [isNewLayoutOpen, setIsNewLayoutOpen] = useState(false);
 
   const currentLayoutName =
-    recentLayouts.length > 0 ? recentLayouts[0][1].name : "";
+    recentLayouts.length > 0 ? recentLayouts[0].name : "";
 
   return (
     <>
