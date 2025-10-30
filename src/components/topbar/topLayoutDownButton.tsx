@@ -236,10 +236,7 @@ function TopLayoutDownPanel({
                 return (
                   <div
                     key={virtualItem.key}
-                    className={clsx(
-                      `absolute top-0 left-0 w-full`,
-                      "w-full px-4 py-2",
-                    )}
+                    className={clsx("absolute top-0 left-0 w-full px-4 py-2")}
                     style={{ transform: `translateY(${virtualItem.start}px)` }}
                   >
                     <hr className="w-full border-border" />
@@ -348,7 +345,7 @@ export function TopLayoutDownButton() {
         </PopoverButton>
         <PopoverPanel
           anchor={{ to: "bottom end", padding: "8px" }}
-          className="flex flex-col bg-second-background shadow-lg"
+          className="flex flex-col bg-second-background shadow-lg z-10"
         >
           {({ close }) => {
             return (

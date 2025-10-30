@@ -181,7 +181,7 @@ export function TopTimeZone() {
       </PopoverButton>
       <PopoverPanel
         anchor={{ to: "bottom end", padding: "8px" }}
-        className="flex flex-col bg-second-background shadow-lg"
+        className="flex flex-col bg-second-background shadow-lg z-10"
       >
         {({ close }) => {
           return <TimeZonePanel close={close} />;

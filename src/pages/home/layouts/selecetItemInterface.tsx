@@ -22,7 +22,7 @@ export function SelecetItemInterface({
     <>
       <div
         className={clsx(
-          "absolute left-12.5 top-0.25 right-0 h-9.5 z-1 flex flex-row gap-3 items-center bg-data-grid-border",
+          "absolute left-12.5 top-0.25 right-0 h-9.5 z-2 flex flex-row gap-3 items-center bg-data-grid-border",
         )}
       >
         <Button

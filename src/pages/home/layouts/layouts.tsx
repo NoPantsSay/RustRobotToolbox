@@ -8,9 +8,10 @@ import {
   ListboxOption,
   ListboxOptions,
 } from "@headlessui/react";
+import { useVirtualizer } from "@tanstack/react-virtual";
 import { clsx } from "clsx";
 import { formatDistance } from "date-fns";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { HiArrowDown, HiArrowUp } from "react-icons/hi2";
 import {
   MdCheckBox,
@@ -50,6 +51,7 @@ export function Layouts() {
   useEffect(() => {
     setTitle(intl.formatMessage({ id: "home.layouts" }));
   }, [setTitle, intl]);
+  const parentRef = useRef(null);
 
   const date = useMemo(() => new Date(), []);
 
@@ -144,6 +146,13 @@ export function Layouts() {
     getlayoutUpdateFilterFilter,
     layoutsSort,
   ]);
+
+  const rowVirtualizer = useVirtualizer({
+    count: filteredLayouts.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 40,
+    overscan: 5,
+  });
 
   const [layoutsCheckedSet, setLayoutsCheckedSet] = useImmer(new Set<string>());
 
@@ -255,7 +264,7 @@ export function Layouts() {
               <ListboxOptions
                 anchor="bottom"
                 className={clsx(
-                  "w-(--button-width) py-2 bg-second-background outline-none",
+                  "w-(--button-width) py-2 bg-second-background outline-none z-10",
                 )}
               >
                 {layoutTypes.map((data) => (
@@ -308,7 +317,7 @@ export function Layouts() {
               <ListboxOptions
                 anchor="bottom"
                 className={clsx(
-                  "w-(--button-width) py-2 bg-second-background outline-none",
+                  "w-(--button-width) py-2 bg-second-background outline-none z-10",
                 )}
               >
                 {layoutUpdateFilters.map((data) => (
@@ -338,10 +347,10 @@ export function Layouts() {
               setLayoutsCheckedSet={setLayoutsCheckedSet}
             />
           )}
-          <div className="flex flex-col overflow-auto">
+          <div ref={parentRef} className="flex flex-col overflow-auto">
             <div
               className={clsx(
-                "grid grid-cols-[40px_minmax(150px,_1fr)_140px_120px_120px_minmax(90px,_1fr)_60px] sticky top-0 h-10 items-center bg-background",
+                "grid grid-cols-[40px_minmax(150px,_1fr)_140px_120px_120px_minmax(90px,_1fr)_60px] sticky top-0 h-10 items-center bg-background z-1",
               )}
             >
               <div className="flex h-full items-center justify-center border-b border-border">
@@ -440,137 +449,117 @@ export function Layouts() {
               <div className="h-full px-2.5 border-b border-border" />
               <div className="h-full px-2.5 border-b border-border" />
             </div>
-            {filteredLayouts.map((data, index) => (
-              // biome-ignore lint/a11y/noStaticElementInteractions: just ignore
-              // biome-ignore lint/a11y/useKeyWithClickEvents:  just ignore
-              <div
-                onClick={() => {
-                  itemToggle(data.uuid);
-                }}
-                key={data.uuid}
-                className={clsx(
-                  "group grid grid-cols-[40px_minmax(150px,_1fr)_140px_120px_120px_minmax(90px,_1fr)_60px] h-10 items-center",
-                )}
-              >
-                <div
-                  className={clsx(
-                    "group flex h-full items-center justify-center ",
-                    layoutsCheckedSet.has(data.uuid)
-                      ? "bg-scheme-background group-hover:bg-scheme-hover-background"
-                      : "group-hover:bg-hover-background",
-                    {
-                      "border-t border-data-grid-border": index !== 0,
-                    },
-                  )}
-                >
-                  <Button
-                    onClick={(event) => {
-                      event.stopPropagation();
+            <div
+              className={`relative w-full`}
+              style={{ height: `${rowVirtualizer.getTotalSize()}px` }}
+            >
+              {rowVirtualizer.getVirtualItems().map((virtualItem) => {
+                const data = filteredLayouts[virtualItem.index];
+                const index = virtualItem.index;
+
+                return (
+                  // biome-ignore lint/a11y/noStaticElementInteractions: just ignore
+                  // biome-ignore lint/a11y/useKeyWithClickEvents:  just ignore
+                  <div
+                    onClick={() => {
                       itemToggle(data.uuid);
                     }}
+                    key={data.uuid}
                     className={clsx(
-                      "size-5 rounded-xs outline-none items-center cursor-pointer",
-                      layoutsCheckedSet.has(data.uuid)
-                        ? "text-scheme "
-                        : "text-description",
+                      "absolute top-0 left-0 w-full",
+                      "group grid grid-cols-[40px_minmax(150px,_1fr)_140px_120px_120px_minmax(90px,_1fr)_60px] h-10 items-center",
                     )}
+                    style={{ transform: `translateY(${virtualItem.start}px)` }}
                   >
-                    {layoutsCheckedSet.has(data.uuid) ? (
-                      <MdCheckBox size={20} />
-                    ) : (
-                      <MdCheckBoxOutlineBlank
-                        className="hidden group-hover:block"
-                        size={20}
-                      />
-                    )}
-                  </Button>
-                </div>
-                <div
-                  className={clsx(
-                    "flex h-full px-2.5 items-center",
-                    layoutsCheckedSet.has(data.uuid)
-                      ? "bg-scheme-background group-hover:bg-scheme-hover-background"
-                      : "group-hover:bg-hover-background",
-                    {
-                      "border-t border-data-grid-border": index !== 0,
-                    },
-                  )}
-                >
-                  <span className="text-xs text-description ">{data.name}</span>
-                </div>
-                <div
-                  className={clsx(
-                    "flex h-full px-2.5 items-center",
-                    layoutsCheckedSet.has(data.uuid)
-                      ? "bg-scheme-background group-hover:bg-scheme-hover-background"
-                      : "group-hover:bg-hover-background",
-                    {
-                      "border-t border-data-grid-border": index !== 0,
-                    },
-                  )}
-                >
-                  <span className="text-xs text-description ">
-                    <FormattedMessage id={getLayoutTypeDisplay(data.type)} />
-                  </span>
-                </div>
-                <div
-                  className={clsx(
-                    "flex h-full px-2.5 items-center",
-                    layoutsCheckedSet.has(data.uuid)
-                      ? "bg-scheme-background group-hover:bg-scheme-hover-background"
-                      : "group-hover:bg-hover-background",
-                    {
-                      "border-t border-data-grid-border": index !== 0,
-                    },
-                  )}
-                >
-                  <span
-                    className="text-xs text-description"
-                    data-tooltip-id={`lastUpdated:${data.uuid}`}
-                    data-tooltip-content={getDateFormat(data.lastUpdated)}
-                    data-tooltip-place="bottom"
-                  >
-                    {formatDistance(data.lastUpdated, date, {
-                      addSuffix: true,
-                    })}
-                  </span>
-
-                  <Tooltip
-                    id={`lastUpdated:${data.uuid}`}
-                    style={{
-                      fontSize: "12px",
-                      lineHeight: "1.333",
-                      backgroundColor: `var(--color-tooltip-background)`,
-                      color: `var(--color-tooltip-foreground)`,
-                    }}
-                  />
-                </div>
-                <div
-                  className={clsx(
-                    "flex h-full px-2.5 items-center",
-                    layoutsCheckedSet.has(data.uuid)
-                      ? "bg-scheme-background group-hover:bg-scheme-hover-background"
-                      : "group-hover:bg-hover-background",
-                    {
-                      "border-t border-data-grid-border": index !== 0,
-                    },
-                  )}
-                >
-                  {data.lastOpened && (
-                    <>
+                    <div
+                      className={clsx(
+                        "group flex h-full items-center justify-center ",
+                        layoutsCheckedSet.has(data.uuid)
+                          ? "bg-scheme-background group-hover:bg-scheme-hover-background"
+                          : "group-hover:bg-hover-background",
+                        {
+                          "border-t border-data-grid-border": index !== 0,
+                        },
+                      )}
+                    >
+                      <Button
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          itemToggle(data.uuid);
+                        }}
+                        className={clsx(
+                          "size-5 rounded-xs outline-none items-center cursor-pointer",
+                          layoutsCheckedSet.has(data.uuid)
+                            ? "text-scheme "
+                            : "text-description",
+                        )}
+                      >
+                        {layoutsCheckedSet.has(data.uuid) ? (
+                          <MdCheckBox size={20} />
+                        ) : (
+                          <MdCheckBoxOutlineBlank
+                            className="hidden group-hover:block"
+                            size={20}
+                          />
+                        )}
+                      </Button>
+                    </div>
+                    <div
+                      className={clsx(
+                        "flex h-full px-2.5 items-center",
+                        layoutsCheckedSet.has(data.uuid)
+                          ? "bg-scheme-background group-hover:bg-scheme-hover-background"
+                          : "group-hover:bg-hover-background",
+                        {
+                          "border-t border-data-grid-border": index !== 0,
+                        },
+                      )}
+                    >
+                      <span className="text-xs text-description ">
+                        {data.name}
+                      </span>
+                    </div>
+                    <div
+                      className={clsx(
+                        "flex h-full px-2.5 items-center",
+                        layoutsCheckedSet.has(data.uuid)
+                          ? "bg-scheme-background group-hover:bg-scheme-hover-background"
+                          : "group-hover:bg-hover-background",
+                        {
+                          "border-t border-data-grid-border": index !== 0,
+                        },
+                      )}
+                    >
+                      <span className="text-xs text-description ">
+                        <FormattedMessage
+                          id={getLayoutTypeDisplay(data.type)}
+                        />
+                      </span>
+                    </div>
+                    <div
+                      className={clsx(
+                        "flex h-full px-2.5 items-center",
+                        layoutsCheckedSet.has(data.uuid)
+                          ? "bg-scheme-background group-hover:bg-scheme-hover-background"
+                          : "group-hover:bg-hover-background",
+                        {
+                          "border-t border-data-grid-border": index !== 0,
+                        },
+                      )}
+                    >
                       <span
                         className="text-xs text-description"
-                        data-tooltip-id={`lastOpened:${data.uuid}`}
-                        data-tooltip-content={getDateFormat(data.lastOpened)}
+                        data-tooltip-id={`lastUpdated:${data.uuid}`}
+                        data-tooltip-content={getDateFormat(data.lastUpdated)}
                         data-tooltip-place="bottom"
                       >
-                        {formatDistance(data.lastOpened, date, {
+                        {formatDistance(data.lastUpdated, date, {
                           addSuffix: true,
                         })}
                       </span>
 
                       <Tooltip
-                        id={`lastOpened:${data.uuid}`}
+                        id={`lastUpdated:${data.uuid}`}
                         style={{
                           fontSize: "12px",
                           lineHeight: "1.333",
@@ -578,41 +567,79 @@ export function Layouts() {
                           color: `var(--color-tooltip-foreground)`,
                         }}
                       />
-                    </>
-                  )}
-                </div>
-                <div
-                  className={clsx(
-                    "flex h-full px-2.5 items-center justify-end",
-                    layoutsCheckedSet.has(data.uuid)
-                      ? "bg-scheme-background group-hover:bg-scheme-hover-background"
-                      : "group-hover:bg-hover-background",
-                    {
-                      "border-t border-data-grid-border": index !== 0,
-                    },
-                  )}
-                >
-                  <LayoutItemOpenButton uuid={data.uuid} />
-                </div>
-                <div
-                  className={clsx(
-                    "flex h-full px-2.5 items-center justify-center",
-                    layoutsCheckedSet.has(data.uuid)
-                      ? "bg-scheme-background group-hover:bg-scheme-hover-background"
-                      : "group-hover:bg-hover-background",
-                    {
-                      "border-t border-data-grid-border": index !== 0,
-                    },
-                  )}
-                >
-                  <LayoutItemMenuButton
-                    uuid={data.uuid}
-                    data={data}
-                    onDelete={itemDelete}
-                  />
-                </div>
-              </div>
-            ))}
+                    </div>
+                    <div
+                      className={clsx(
+                        "flex h-full px-2.5 items-center",
+                        layoutsCheckedSet.has(data.uuid)
+                          ? "bg-scheme-background group-hover:bg-scheme-hover-background"
+                          : "group-hover:bg-hover-background",
+                        {
+                          "border-t border-data-grid-border": index !== 0,
+                        },
+                      )}
+                    >
+                      {data.lastOpened && (
+                        <>
+                          <span
+                            className="text-xs text-description"
+                            data-tooltip-id={`lastOpened:${data.uuid}`}
+                            data-tooltip-content={getDateFormat(
+                              data.lastOpened,
+                            )}
+                            data-tooltip-place="bottom"
+                          >
+                            {formatDistance(data.lastOpened, date, {
+                              addSuffix: true,
+                            })}
+                          </span>
+
+                          <Tooltip
+                            id={`lastOpened:${data.uuid}`}
+                            style={{
+                              fontSize: "12px",
+                              lineHeight: "1.333",
+                              backgroundColor: `var(--color-tooltip-background)`,
+                              color: `var(--color-tooltip-foreground)`,
+                            }}
+                          />
+                        </>
+                      )}
+                    </div>
+                    <div
+                      className={clsx(
+                        "flex h-full px-2.5 items-center justify-end",
+                        layoutsCheckedSet.has(data.uuid)
+                          ? "bg-scheme-background group-hover:bg-scheme-hover-background"
+                          : "group-hover:bg-hover-background",
+                        {
+                          "border-t border-data-grid-border": index !== 0,
+                        },
+                      )}
+                    >
+                      <LayoutItemOpenButton uuid={data.uuid} />
+                    </div>
+                    <div
+                      className={clsx(
+                        "flex h-full px-2.5 items-center justify-center",
+                        layoutsCheckedSet.has(data.uuid)
+                          ? "bg-scheme-background group-hover:bg-scheme-hover-background"
+                          : "group-hover:bg-hover-background",
+                        {
+                          "border-t border-data-grid-border": index !== 0,
+                        },
+                      )}
+                    >
+                      <LayoutItemMenuButton
+                        uuid={data.uuid}
+                        data={data}
+                        onDelete={itemDelete}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>

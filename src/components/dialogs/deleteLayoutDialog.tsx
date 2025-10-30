@@ -23,9 +23,9 @@ export function DeleteLayoutDialog({
     <Dialog
       open={open}
       onClose={onClose}
-      className="relative z-10 outline-none"
+      className="relative z-100 outline-none"
     >
-      <div className="fixed inset-0 z-10 flex items-center justify-center p-12">
+      <div className="fixed inset-0 flex items-center justify-center p-12">
         <DialogPanel className="flex-1 max-w-md rounded-md bg-dialog-background drop-shadow-xl overflow-y-auto">
           <DialogTitle className="px-6 py-4 font-bold text-xl">
             {title}

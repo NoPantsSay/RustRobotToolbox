@@ -56,9 +56,9 @@ export function AddLayoutDialog({
       onClose={() => {
         onClose();
       }}
-      className="relative z-10 outline-none"
+      className="relative z-100 outline-none"
     >
-      <div className="fixed inset-0 z-10 flex items-center justify-center p-12">
+      <div className="fixed inset-0 flex items-center justify-center p-12">
         <DialogPanel className="flex-1 max-w-md rounded-md bg-dialog-background drop-shadow-xl overflow-y-auto">
           <div className="flex flex-row border-b border-b-border justify-between items-center px-6 pt-4 pb-3">
             <DialogTitle className="font-bold text-xl">
@@ -123,7 +123,7 @@ export function AddLayoutDialog({
                 <ListboxOptions
                   anchor="bottom"
                   className={clsx(
-                    "w-(--button-width) py-2 bg-second-background outline-none z-10",
+                    "w-(--button-width) py-2 bg-second-background outline-none",
                   )}
                 >
                   {filterLayoutTypes.map((data) => (

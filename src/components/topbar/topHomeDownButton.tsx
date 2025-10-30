@@ -41,7 +41,7 @@ export function TopHomeDownButton() {
       </PopoverButton>
       <PopoverPanel
         anchor={{ to: "bottom end", padding: "8px" }}
-        className="flex flex-col w-75 py-2 bg-second-background shadow-lg"
+        className="flex flex-col w-75 py-2 bg-second-background shadow-lg z-10"
       >
         <TopHomeNavigate />
       </PopoverPanel>
