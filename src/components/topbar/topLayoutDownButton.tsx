@@ -196,7 +196,6 @@ function TopLayoutDownPanel({
     navigate,
     setIsNewLayoutOpen,
     close,
-    handleImportLayout,
   ]);
 
   const rowVirtualizer = useVirtualizer({

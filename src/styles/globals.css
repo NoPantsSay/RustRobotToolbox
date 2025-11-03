@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-/* biome-ignore lint/suspicious/noUnknownAtRules: just ignore */
 @theme {
   --color-scheme: #ecb330;
   --color-scheme-background: color-mix(
@@ -15,7 +14,6 @@
   );
 }
 
-/* biome-ignore lint/suspicious/noUnknownAtRules: just ignore */
 @theme {
   --color-input-background: color-mix(in srgb, #000000 6%, transparent);
   --color-tooltip-background: #f8f8f8;
