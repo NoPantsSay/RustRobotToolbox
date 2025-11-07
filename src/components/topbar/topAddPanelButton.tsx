@@ -1,7 +1,7 @@
 import { Button } from "@headlessui/react";
 import { useId } from "react";
 import { TbSquarePlus2 } from "react-icons/tb";
-import { Tooltip } from "react-tooltip";
+import { TooltipWithPortal } from "../tooltips/tooltipWithPortal";
 
 export function TopAddPlanelButton() {
   const tooltipId = useId();
@@ -16,15 +16,7 @@ export function TopAddPlanelButton() {
       >
         <TbSquarePlus2 size={20} />
       </Button>
-      <Tooltip
-        id={tooltipId}
-        style={{
-          fontSize: "12px",
-          lineHeight: "1.333",
-          backgroundColor: `var(--color-tooltip-background)`,
-          color: `var(--color-tooltip-foreground)`,
-        }}
-      />
+      <TooltipWithPortal id={tooltipId} />
     </>
   );
 }

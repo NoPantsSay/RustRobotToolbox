@@ -9,6 +9,7 @@ import {
 import { useEffect, useEffectEvent, useState } from "react";
 import { useTitle } from "../../globals/useTitle";
 import "../../styles/rc-dock.css";
+import clsx from "clsx";
 import { RcdockCloseButton } from "../../components/buttons/rcdockCloseButton";
 import { type LayoutsInfo, useLayouts } from "../../stores/useLayouts";
 
@@ -122,6 +123,11 @@ export function View() {
           <RcdockCloseButton
             onClick={() => {
               setIsLeftSidebarOpen(false);
+              if (recentlayouts.length > 0) {
+                updateLayout(recentlayouts[0].uuid, {
+                  isLeftSidebarOpen: false,
+                });
+              }
             }}
           />,
         );
@@ -139,6 +145,11 @@ export function View() {
           <RcdockCloseButton
             onClick={() => {
               setIsRightSidebarOpen(false);
+              if (recentlayouts.length > 0) {
+                updateLayout(recentlayouts[0].uuid, {
+                  isRightSidebarOpen: false,
+                });
+              }
             }}
           />,
         );
@@ -147,33 +158,44 @@ export function View() {
     },
     view: {
       floatable: false,
-      tabLocked: true,
       maximizable: true,
     },
   };
 
   return (
     <DividerBox mode="horizontal" className="h-full w-full">
-      {isLeftSidebarOpen && (
-        <DockLayout
-          defaultLayout={leftsideLayout}
-          style={{ width: 300, minWidth: 100 }}
-          groups={groups}
-        />
-      )}
+      <div
+        className={clsx(
+          isLeftSidebarOpen ? "w-[50%] min-w-[100px]" : "w-[0%] min-w-0",
+        )}
+      >
+        {isLeftSidebarOpen && (
+          <DockLayout
+            defaultLayout={leftsideLayout}
+            style={{ width: "100%", height: "100%" }}
+            groups={groups}
+          />
+        )}
+      </div>
       <DockLayout
         defaultLayout={viewLayout}
         style={{ width: "100%", minWidth: 100 }}
         dropMode="edge"
         groups={groups}
       />
-      {isRightSidebarOpen && (
-        <DockLayout
-          defaultLayout={rightsideLayout}
-          style={{ width: 300, minWidth: 100 }}
-          groups={groups}
-        />
-      )}
+      <div
+        className={clsx(
+          isRightSidebarOpen ? "w-[50%] min-w-[100px]" : "w-[0%] min-w-0",
+        )}
+      >
+        {isRightSidebarOpen && (
+          <DockLayout
+            defaultLayout={rightsideLayout}
+            style={{ width: "100%", height: "100%" }}
+            groups={groups}
+          />
+        )}
+      </div>
     </DividerBox>
   );
 }

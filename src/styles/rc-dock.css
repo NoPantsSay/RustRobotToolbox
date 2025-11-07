@@ -88,7 +88,7 @@
   --color-rc-dock-dock-panel-dock-style-view-dock-tab-background: #141414;
 }
 
-body>.dragging-layer {
+body > .dragging-layer {
   position: absolute !important;
   z-index: 9999;
   overflow: visible;
@@ -105,7 +105,7 @@ body>.dragging-layer {
   /* icon */
 }
 
-body>.dragging-layer>*:first-child {
+body > .dragging-layer > *:first-child {
   pointer-events: none !important;
   overflow: hidden !important;
   transform: translate(-50%, -50%) !important;
@@ -114,12 +114,12 @@ body>.dragging-layer>*:first-child {
     inset 0 0 8px var(--color-rc-dock-box-shadow);
 }
 
-body>.dragging-layer>.dragging {
+body > .dragging-layer > .dragging {
   /* prevent double translucent layers */
   opacity: 1 !important;
 }
 
-body>.dragging-layer>div:last-child {
+body > .dragging-layer > div:last-child {
   position: absolute;
   left: 12px;
   top: 12px;
@@ -196,7 +196,7 @@ body>.dragging-layer>div:last-child {
   opacity: 0.3;
 }
 
-.dock-tab>div {
+.dock-tab > div {
   padding: 4px 14px;
   outline-color: #108ee9;
 }
@@ -225,10 +225,10 @@ body>.dragging-layer>div:last-child {
   transition: margin 0.3s;
 }
 
-.dock-bottom>.dock-nav .dock-ink-bar-animated,
-.dock-top>.dock-nav .dock-ink-bar-animated,
-.dock-bottom>div>.dock-nav .dock-ink-bar-animated,
-.dock-top>div>.dock-nav .dock-ink-bar-animated {
+.dock-bottom > .dock-nav .dock-ink-bar-animated,
+.dock-top > .dock-nav .dock-ink-bar-animated,
+.dock-bottom > div > .dock-nav .dock-ink-bar-animated,
+.dock-top > div > .dock-nav .dock-ink-bar-animated {
   transition:
     width 0.3s,
     left 0.3s,
@@ -344,7 +344,7 @@ body>.dragging-layer>div:last-child {
   flex: auto;
 }
 
-.dock-top>.dock-content-holder {
+.dock-top > .dock-content-holder {
   /* work around for the height issue in content holder*/
   height: 0;
 }
@@ -578,7 +578,9 @@ body.dock-dragging iframe {
 }
 
 .dock-panel-drag-size-b-r {
-  background-image: var(--url-rc-dock-dock-panel-drag-size-b-r-background-image-url);
+  background-image: var(
+    --url-rc-dock-dock-panel-drag-size-b-r-background-image-url
+  );
   bottom: -4px;
   right: -4px;
   width: 17px;
@@ -598,7 +600,7 @@ body.dock-dragging iframe {
   align-items: stretch;
 }
 
-.divider-box>*:nth-child(odd) {
+.divider-box > *:nth-child(odd) {
   flex: 1 1 auto;
 }
 
@@ -609,7 +611,7 @@ body.dock-dragging iframe {
   z-index: 1;
 }
 
-.dock-hbox>.dock-divider {
+.dock-hbox > .dock-divider {
   transform: scaleX(1);
   cursor: ew-resize;
 }
@@ -618,7 +620,7 @@ body.dock-dragging iframe {
   flex-direction: column;
 }
 
-.dock-vbox>.dock-divider {
+.dock-vbox > .dock-divider {
   transform: scaleY(1);
   cursor: ns-resize;
 }
@@ -628,13 +630,13 @@ body.dock-dragging iframe {
   z-index: 200;
 }
 
-.dock-fbox>.dock-panel {
+.dock-fbox > .dock-panel {
   position: absolute;
   pointer-events: visible;
   box-shadow: 0 0 4px var(--color-rc-dock-dock-fbox-dock-panel-box-shadow);
 }
 
-.dock-fbox>.dock-panel.dragging {
+.dock-fbox > .dock-panel.dragging {
   opacity: 0.8;
   pointer-events: none;
 }
@@ -645,7 +647,7 @@ body.dock-dragging iframe {
   height: 100%;
 }
 
-.dock-mbox>.dock-panel {
+.dock-mbox > .dock-panel {
   width: 100%;
   height: 100%;
   box-shadow: 0 0 4px #aaaaaa;
@@ -695,7 +697,7 @@ body.dock-dragging iframe {
   height: 100%;
 }
 
-.dock-wbox>.dock-panel {
+.dock-wbox > .dock-panel {
   border: none;
   width: 100%;
   height: 100%;
@@ -706,13 +708,13 @@ body.dock-dragging iframe {
   position: relative;
 }
 
-.dock-layout>.dock-box {
+.dock-layout > .dock-box {
   position: absolute;
   width: 100%;
   height: 100%;
 }
 
-.dock-layout>.dock-drop-indicator {
+.dock-layout > .dock-drop-indicator {
   position: absolute;
   box-sizing: border-box;
   pointer-events: none;
@@ -763,7 +765,10 @@ body.dock-dragging iframe {
 
 .dock-drop-layer .dock-drop-square .dock-drop-square-box {
   box-sizing: border-box;
-  border: 1px solid var(--color-rc-dock-dock-drop-layer-dock-drop-square-dock-drop-square-box-border);
+  border: 1px solid
+    var(
+      --color-rc-dock-dock-drop-layer-dock-drop-square-dock-drop-square-box-border
+    );
   width: 100%;
   height: 100%;
 }
@@ -851,7 +856,9 @@ body.dock-dragging iframe {
 }
 
 .dock-drop-layer .dock-drop-square-dropping {
-  background: var(--color-rc-dock-dock-drop-layer-dock-drop-square-dropping-background);
+  background: var(
+    --color-rc-dock-dock-drop-layer-dock-drop-square-dropping-background
+  );
   color: white;
 }
 
@@ -928,11 +935,11 @@ body.dock-dragging iframe {
   display: none;
 }
 
-.dock-layout> :not(.dock-fbox) .dock-panel.dock-style-headless {
+.dock-layout > :not(.dock-fbox) .dock-panel.dock-style-headless {
   border: none;
 }
 
-.dock-layout> :not(.dock-fbox) .dock-panel.dock-style-headless .dock-bar {
+.dock-layout > :not(.dock-fbox) .dock-panel.dock-style-headless .dock-bar {
   position: absolute;
   z-index: 1;
   opacity: 0;
@@ -941,14 +948,20 @@ body.dock-dragging iframe {
   transition: all 0.15s ease-in-out;
 }
 
-.dock-layout> :not(.dock-fbox) .dock-panel.dock-style-headless .dock-bar:hover,
-.dock-layout> :not(.dock-fbox) .dock-panel.dock-style-headless .dock-bar:focus-within,
-.dock-layout> :not(.dock-fbox) .dock-panel.dock-style-headless.dock-panel-dropping .dock-bar {
+.dock-layout > :not(.dock-fbox) .dock-panel.dock-style-headless .dock-bar:hover,
+.dock-layout
+  > :not(.dock-fbox)
+  .dock-panel.dock-style-headless
+  .dock-bar:focus-within,
+.dock-layout
+  > :not(.dock-fbox)
+  .dock-panel.dock-style-headless.dock-panel-dropping
+  .dock-bar {
   opacity: 1;
   height: 31px;
 }
 
-.dock-layout> :not(.dock-fbox) .dock-panel.dock-style-headless .dock-content {
+.dock-layout > :not(.dock-fbox) .dock-panel.dock-style-headless .dock-content {
   height: 100%;
 }
 
@@ -958,26 +971,36 @@ body.dock-dragging iframe {
 
 .dock-panel.dock-style-main .dock-bar {
   background: none;
-  border-bottom: 1px solid var(--color-rc-dock-dock-panel-dock-style-main-dock-bar-border-bottom);
+  border-bottom: 1px solid
+    var(--color-rc-dock-dock-panel-dock-style-main-dock-bar-border-bottom);
 }
 
 .dock-panel.dock-style-main .dock-tab {
-  background: var(--color-rc-dock-dock-panel-dock-style-main-dock-tab-background);
+  background: var(
+    --color-rc-dock-dock-panel-dock-style-main-dock-tab-background
+  );
 }
 
 .dock-panel.dock-style-card .dock-tab {
   margin-right: 2px;
-  border: 1px solid var(--color-rc-dock-dock-panel-dock-style-card-dock-tab-border);
+  border: 1px solid
+    var(--color-rc-dock-dock-panel-dock-style-card-dock-tab-border);
   border-radius: 5px 5px 0 0;
 }
 
 .dock-panel.dock-style-card .dock-tab.dock-tab-active {
-  border-bottom: 1px solid var(--color-rc-dock-dock-panel-dock-style-card-dock-tab-dock-tab-active-border-bottom);
-  background: var(--color-rc-dock-dock-panel-dock-style-card-dock-tab-dock-tab-active-background);
+  border-bottom: 1px solid
+    var(
+      --color-rc-dock-dock-panel-dock-style-card-dock-tab-dock-tab-active-border-bottom
+    );
+  background: var(
+    --color-rc-dock-dock-panel-dock-style-card-dock-tab-dock-tab-active-background
+  );
 }
 
 .dock-panel.dock-style-card .dock-bar {
-  border-bottom: 1px solid var(--color-rc-dock-dock-panel-dock-style-card-dock-bar-border-bottom);
+  border-bottom: 1px solid
+    var(--color-rc-dock-dock-panel-dock-style-card-dock-bar-border-bottom);
   overflow: visible;
 }
 
@@ -988,7 +1011,9 @@ body.dock-dragging iframe {
 
 .dock-panel.dock-style-card .dock-ink-bar {
   /* hide animated ink bar */
-  background: var(--color-rc-dock-dock-panel-dock-style-card-dock-ink-bar-background);
+  background: var(
+    --color-rc-dock-dock-panel-dock-style-card-dock-ink-bar-background
+  );
   opacity: 0;
 }
 
@@ -1021,11 +1046,16 @@ body.dock-dragging iframe {
 
 .dock-panel.dock-style-leftsidebar .dock-bar {
   background: none;
-  border-bottom: 1px solid var(--color-rc-dock-dock-panel-dock-style-leftsidebar-dock-bar-border-bottom);
+  border-bottom: 1px solid
+    var(
+      --color-rc-dock-dock-panel-dock-style-leftsidebar-dock-bar-border-bottom
+    );
 }
 
 .dock-panel.dock-style-leftsidebar .dock-tab {
-  background: var(--color-rc-dock-dock-panel-dock-style-leftsidebar-dock-tab-background);
+  background: var(
+    --color-rc-dock-dock-panel-dock-style-leftsidebar-dock-tab-background
+  );
 }
 
 .dock-panel.dock-style-rightsidebar {
@@ -1034,11 +1064,16 @@ body.dock-dragging iframe {
 
 .dock-panel.dock-style-rightsidebar .dock-bar {
   background: none;
-  border-bottom: 1px solid var(--color-rc-dock-dock-panel-dock-style-rightsidebar-dock-bar-border-bottom);
+  border-bottom: 1px solid
+    var(
+      --color-rc-dock-dock-panel-dock-style-rightsidebar-dock-bar-border-bottom
+    );
 }
 
 .dock-panel.dock-style-rightsidebar .dock-tab {
-  background: var(--color-rc-dock-dock-panel-dock-style-rightsidebar-dock-tab-background);
+  background: var(
+    --color-rc-dock-dock-panel-dock-style-rightsidebar-dock-tab-background
+  );
 }
 
 .dock-panel.dock-style-view {
@@ -1047,9 +1082,12 @@ body.dock-dragging iframe {
 
 .dock-panel.dock-style-view .dock-bar {
   background: none;
-  border-bottom: 1px solid var(--color-rc-dock-dock-panel-dock-style-view-dock-bar-border-bottom);
+  border-bottom: 1px solid
+    var(--color-rc-dock-dock-panel-dock-style-view-dock-bar-border-bottom);
 }
 
 .dock-panel.dock-style-view .dock-tab {
-  background: var(--color-rc-dock-dock-panel-dock-style-view-dock-tab-background);
+  background: var(
+    --color-rc-dock-dock-panel-dock-style-view-dock-tab-background
+  );
 }
