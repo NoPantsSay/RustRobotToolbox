@@ -12,9 +12,9 @@ import { createSuperJSONStorage } from "./utils/superJsonStorage";
 import { defaultTauriStorage } from "./utils/tauriStoreState";
 
 export enum LayoutTypeEnum {
-  All = "all",
   Local = "local",
   Online = "online",
+  All = "all",
 }
 
 interface LayoutTypeInfo {
@@ -125,12 +125,14 @@ export interface LayoutsInfo {
   type: LayoutTypeEnum;
   lastUpdated: Date;
   lastOpened?: Date;
+  isLeftSidebarOpen: boolean;
+  isRightSidebarOpen: boolean;
 }
 
 interface LayoutsState {
   recentlayouts: string[];
   layouts: Map<string, LayoutsInfo>;
-  addLayout: (name: string, type: LayoutTypeEnum) => string;
+  addLayout: (name: string, type?: LayoutTypeEnum) => string;
   delLayout: (uuid: string) => void;
   updateLayout: (
     uuid: string,
@@ -153,14 +155,16 @@ export const useLayouts = create<LayoutsState>()(
     immer((set, get) => ({
       recentlayouts: [],
       layouts: new Map(),
-      addLayout: (name: string, type: LayoutTypeEnum) => {
+      addLayout: (name: string, type?: LayoutTypeEnum) => {
         const uuid = uuidv4();
         set((state: LayoutsState) => {
           state.layouts.set(uuid, {
             uuid,
             name,
-            type,
+            type: type ? type : LayoutTypeEnum.Local,
             lastUpdated: new Date(),
+            isLeftSidebarOpen: true,
+            isRightSidebarOpen: true,
           });
         });
         return uuid;

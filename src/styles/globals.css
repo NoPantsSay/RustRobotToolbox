@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --color-scheme: #ecb330;
+  --color-scheme: #108ee9;
   --color-scheme-background: color-mix(
     in srgb,
     var(--color-scheme) 16%,

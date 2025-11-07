@@ -5,16 +5,26 @@ import {
   VscLayoutSidebarRightOff,
 } from "react-icons/vsc";
 import { Tooltip } from "react-tooltip";
+import { useLayouts } from "../../stores/useLayouts";
 
 export function TopRightSidebarButton() {
   const tooltipId = useId();
-  const [isOpen, setIsOpen] = useState(true);
+  const { getRecentLayouts, updateLayout } = useLayouts();
+  const recentlayouts = getRecentLayouts();
+  const [isOpen, setIsOpen] = useState(
+    recentlayouts.length > 0 ? recentlayouts[0].isRightSidebarOpen : true,
+  );
 
   return (
     <>
       <Button
         onClick={() => {
           setIsOpen(!isOpen);
+          if (recentlayouts.length > 0) {
+            updateLayout(recentlayouts[0].uuid, {
+              isRightSidebarOpen: !isOpen,
+            });
+          }
         }}
         className="p-3 hover:bg-hover-background cursor-pointer"
         data-tooltip-id={tooltipId}
