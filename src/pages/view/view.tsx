@@ -165,9 +165,8 @@ export function View() {
   return (
     <DividerBox mode="horizontal" className="h-full w-full">
       <div
-        className={clsx(
-          isLeftSidebarOpen ? "w-[50%] min-w-[100px]" : "w-[0%] min-w-0",
-        )}
+        className={clsx("w-[50%] min-w-[100px]")}
+        hidden={!isLeftSidebarOpen}
       >
         {isLeftSidebarOpen && (
           <DockLayout
@@ -184,9 +183,8 @@ export function View() {
         groups={groups}
       />
       <div
-        className={clsx(
-          isRightSidebarOpen ? "w-[50%] min-w-[100px]" : "w-[0%] min-w-0",
-        )}
+        className={clsx("w-[50%] min-w-[100px]")}
+        hidden={!isRightSidebarOpen}
       >
         {isRightSidebarOpen && (
           <DockLayout
