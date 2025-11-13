@@ -1,199 +1,111 @@
-import {
-  DividerBox,
-  type DockContext,
-  DockLayout,
-  type LayoutData,
-  type PanelData,
-  type TabGroup,
-} from "rc-dock";
 import { useEffect, useEffectEvent, useState } from "react";
 import { useTitle } from "../../globals/useTitle";
 import "../../styles/rc-dock.css";
 import clsx from "clsx";
-import { RcdockCloseButton } from "../../components/buttons/rcdockCloseButton";
-import { type LayoutsInfo, useLayouts } from "../../stores/useLayouts";
+import {
+  type ISplitviewPanelProps,
+  Orientation,
+  type SplitviewApi,
+  SplitviewReact,
+  type SplitviewReadyEvent,
+  themeDark,
+  themeLight,
+} from "dockview-react";
+import { useLayouts } from "../../stores/useLayouts";
+import "dockview-react/dist/styles/dockview.css";
+import { useTheme } from "../../stores/useTheme";
+import { LeftSidebar } from "./leftsidebar/leftsidebar";
+import { RightSidebar } from "./rightsidebar/rightsidebar";
 
-const leftsideLayout: LayoutData = {
-  dockbox: {
-    id: "leftside",
-    mode: "vertical",
-    children: [
-      {
-        tabs: [
-          {
-            id: "plane",
-            title: "plane",
-            content: <></>,
-            group: "leftsidebar",
-          },
-          {
-            id: "topics",
-            title: "topics",
-            content: <></>,
-            group: "leftsidebar",
-          },
-          {
-            id: "problems",
-            title: "problems",
-            content: <></>,
-            group: "leftsidebar",
-          },
-        ],
-      },
-    ],
+const components = {
+  main: (props: ISplitviewPanelProps) => {
+    return <div>Panel {props.api.id}</div>;
   },
-};
-
-const viewLayout: LayoutData = {
-  dockbox: {
-    id: "view",
-    mode: "horizontal",
-    children: [
-      {
-        tabs: [
-          {
-            id: "main",
-            title: "main",
-            content: <></>,
-            group: "view",
-          },
-        ],
-      },
-    ],
-  },
-};
-
-const rightsideLayout: LayoutData = {
-  dockbox: {
-    id: "rightside",
-    mode: "vertical",
-    children: [
-      {
-        tabs: [
-          {
-            id: "variables",
-            title: "variables",
-            content: <></>,
-            group: "rightsidebar",
-          },
-        ],
-      },
-    ],
-  },
+  leftsidebar: LeftSidebar,
+  rightsidebar: RightSidebar,
 };
 
 export function View() {
+  const { currentTheme } = useTheme();
   const setTitle = useTitle((state) => state.setTitle);
   useEffect(() => {
     setTitle("view");
   }, [setTitle]);
 
-  const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(true);
-  const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(true);
+  const [api, setApi] = useState<SplitviewApi>();
 
-  const { pushRecentLayout, getRecentLayouts, addLayout, updateLayout } =
+  const { pushRecentLayout, getCurrentLayout, addLayout, updateLayout } =
     useLayouts();
-  const recentlayouts = getRecentLayouts();
+  const currentlayout = getCurrentLayout();
 
-  const updateSidebar = useEffectEvent((layouts: LayoutsInfo[]) => {
-    if (layouts.length > 0) {
-      setIsLeftSidebarOpen(layouts[0].isLeftSidebarOpen);
-      setIsRightSidebarOpen(layouts[0].isRightSidebarOpen);
-    } else {
-      const uuid = addLayout("default");
-      updateLayout(uuid, { lastOpened: new Date() });
-      pushRecentLayout(uuid);
-    }
-  });
-  useEffect(() => {
-    updateSidebar(recentlayouts);
-  }, [recentlayouts]);
+  const onReady = (event: SplitviewReadyEvent) => {
+    setApi(event.api);
 
-  const groups: {
-    [key: string]: TabGroup;
-  } = {
-    leftsidebar: {
-      floatable: false,
-      maximizable: false,
-      disableDock: true,
-      tabLocked: true,
-      panelExtra: (_panelData: PanelData, _context: DockContext) => {
-        const buttons = [];
-        buttons.push(
-          <RcdockCloseButton
-            onClick={() => {
-              setIsLeftSidebarOpen(false);
-              if (recentlayouts.length > 0) {
-                updateLayout(recentlayouts[0].uuid, {
-                  isLeftSidebarOpen: false,
-                });
-              }
-            }}
-          />,
-        );
-        return <div>{buttons}</div>;
-      },
-    },
-    rightsidebar: {
-      floatable: false,
-      maximizable: false,
-      disableDock: true,
-      tabLocked: true,
-      panelExtra: (_panelData: PanelData, _context: DockContext) => {
-        const buttons = [];
-        buttons.push(
-          <RcdockCloseButton
-            onClick={() => {
-              setIsRightSidebarOpen(false);
-              if (recentlayouts.length > 0) {
-                updateLayout(recentlayouts[0].uuid, {
-                  isRightSidebarOpen: false,
-                });
-              }
-            }}
-          />,
-        );
-        return <div>{buttons}</div>;
-      },
-    },
-    view: {
-      floatable: false,
-      maximizable: true,
-    },
+    event.api.addPanel({
+      index: 1,
+      id: "main",
+      component: "main",
+      size: event.api.width * 0.6,
+      minimumSize: 100,
+    });
+    event.api.addPanel({
+      index: 0,
+      id: "leftsidebar",
+      component: "leftsidebar",
+      size: event.api.width * 0.2,
+      minimumSize: 100,
+    });
+    event.api.addPanel({
+      index: 2,
+      id: "rightsidebar",
+      component: "rightsidebar",
+      size: event.api.width * 0.2,
+      minimumSize: 100,
+    });
   };
 
+  const addDefaultLayout = useEffectEvent(() => {
+    const uuid = addLayout("default");
+    updateLayout(uuid, { lastOpened: new Date() });
+    pushRecentLayout(uuid);
+  });
+
+  useEffect(() => {
+    if (currentlayout) {
+      if (!api) {
+        return;
+      }
+
+      const leftplane = api.getPanel("leftsidebar");
+      if (leftplane) {
+        if (currentlayout.isLeftSidebarOpen) {
+          leftplane.api.setVisible(true);
+        } else {
+          leftplane.api.setVisible(false);
+        }
+      }
+
+      const rightplane = api.getPanel("rightsidebar");
+      if (rightplane) {
+        if (currentlayout.isRightSidebarOpen) {
+          rightplane.api.setVisible(true);
+        } else {
+          rightplane.api.setVisible(false);
+        }
+      }
+    } else {
+      addDefaultLayout();
+    }
+  }, [currentlayout, api]);
+
   return (
-    <DividerBox mode="horizontal" className="h-full w-full">
-      <div
-        className={clsx("w-[50%] min-w-[100px]")}
-        hidden={!isLeftSidebarOpen}
-      >
-        {isLeftSidebarOpen && (
-          <DockLayout
-            defaultLayout={leftsideLayout}
-            style={{ width: "100%", height: "100%" }}
-            groups={groups}
-          />
-        )}
-      </div>
-      <DockLayout
-        defaultLayout={viewLayout}
-        style={{ width: "100%", minWidth: 100 }}
-        dropMode="edge"
-        groups={groups}
-      />
-      <div
-        className={clsx("w-[50%] min-w-[100px]")}
-        hidden={!isRightSidebarOpen}
-      >
-        {isRightSidebarOpen && (
-          <DockLayout
-            defaultLayout={rightsideLayout}
-            style={{ width: "100%", height: "100%" }}
-            groups={groups}
-          />
-        )}
-      </div>
-    </DividerBox>
+    <SplitviewReact
+      className={clsx(
+        currentTheme === "DARK" ? themeDark.className : themeLight.className,
+      )}
+      orientation={Orientation.HORIZONTAL}
+      onReady={onReady}
+      components={components}
+    />
   );
 }

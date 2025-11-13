@@ -3,7 +3,6 @@ import { enableMapSet } from "immer";
 import { useEffect } from "react";
 import { IntlProvider } from "react-intl";
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
-import { useDarkMode } from "react-theme-detector";
 import { TopBar } from "./components/topbar/topBar";
 import { Dashboard } from "./pages/home/dashboard/dashboard";
 import { Devices } from "./pages/home/devices/devices";
@@ -18,21 +17,17 @@ import { General } from "./pages/settings/general/general";
 import { Settings } from "./pages/settings/settings";
 import { View } from "./pages/view/view";
 import { useLanguage } from "./stores/useLanguage";
-import { ThemeType, useTheme } from "./stores/useTheme";
+import { useTheme } from "./stores/useTheme";
 
 enableMapSet();
 
 function App() {
-  const theme = useTheme((state) => state.theme);
-  const isDarkMode = useDarkMode();
+  const { currentTheme } = useTheme();
   const { language, getMessage } = useLanguage();
 
   useEffect(() => {
-    document.documentElement.classList.toggle(
-      "dark",
-      theme === ThemeType.DARK || (theme === ThemeType.SYSTEM && isDarkMode),
-    );
-  }, [theme, isDarkMode]);
+    document.documentElement.classList.toggle("dark", currentTheme === "DARK");
+  }, [currentTheme]);
 
   return (
     <IntlProvider locale={language} messages={getMessage()}>

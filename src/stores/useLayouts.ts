@@ -143,6 +143,7 @@ interface LayoutsState {
   loadDataFromJSON: (jsonString: string) => string | null;
   pushRecentLayout: (uuid: string) => void;
   getRecentLayouts: () => LayoutsInfo[];
+  getCurrentLayout: () => LayoutsInfo | null;
   getLayoutTypeDisplay: (type: LayoutTypeEnum) => string;
   getlayoutUpdateFilterDisplay: (type: LayoutUpdateFilterEnum) => string;
   getlayoutUpdateFilterFilter: (
@@ -254,6 +255,16 @@ export const useLayouts = create<LayoutsState>()(
           }
         });
         return recentLayouts;
+      },
+      getCurrentLayout: () => {
+        const { recentlayouts, layouts } = get();
+        if (recentlayouts.length > 0) {
+          const layout = layouts.get(recentlayouts[0]);
+          if (layout) {
+            return layout;
+          }
+        }
+        return null;
       },
       getLayoutTypeDisplay: (type: LayoutTypeEnum) => {
         const info = layoutTypesMap.get(type);

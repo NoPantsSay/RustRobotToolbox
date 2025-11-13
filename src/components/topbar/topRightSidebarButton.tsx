@@ -9,23 +9,23 @@ import { TooltipWithPortal } from "../tooltips/tooltipWithPortal";
 
 export function TopRightSidebarButton() {
   const tooltipId = useId();
-  const { getRecentLayouts, updateLayout } = useLayouts();
-  const recentlayouts = getRecentLayouts();
+  const { getCurrentLayout, updateLayout } = useLayouts();
+  const currentlayout = getCurrentLayout();
   const [isOpen, setIsOpen] = useState(true);
 
   useEffect(() => {
-    if (recentlayouts.length > 0) {
-      setIsOpen(recentlayouts[0].isRightSidebarOpen);
+    if (currentlayout) {
+      setIsOpen(currentlayout.isRightSidebarOpen);
     }
-  }, [recentlayouts]);
+  }, [currentlayout]);
 
   return (
     <>
       <Button
         onClick={() => {
           setIsOpen(!isOpen);
-          if (recentlayouts.length > 0) {
-            updateLayout(recentlayouts[0].uuid, {
+          if (currentlayout) {
+            updateLayout(currentlayout.uuid, {
               isRightSidebarOpen: !isOpen,
             });
           }

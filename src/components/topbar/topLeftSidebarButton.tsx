@@ -6,23 +6,23 @@ import { TooltipWithPortal } from "../tooltips/tooltipWithPortal";
 
 export function TopLeftSidebarButton() {
   const tooltipId = useId();
-  const { getRecentLayouts, updateLayout } = useLayouts();
-  const recentlayouts = getRecentLayouts();
+  const { getCurrentLayout, updateLayout } = useLayouts();
+  const currentlayout = getCurrentLayout();
   const [isOpen, setIsOpen] = useState(true);
 
   useEffect(() => {
-    if (recentlayouts.length > 0) {
-      setIsOpen(recentlayouts[0].isLeftSidebarOpen);
+    if (currentlayout) {
+      setIsOpen(currentlayout.isLeftSidebarOpen);
     }
-  }, [recentlayouts]);
+  }, [currentlayout]);
 
   return (
     <>
       <Button
         onClick={() => {
           setIsOpen(!isOpen);
-          if (recentlayouts.length > 0) {
-            updateLayout(recentlayouts[0].uuid, { isLeftSidebarOpen: !isOpen });
+          if (currentlayout) {
+            updateLayout(currentlayout.uuid, { isLeftSidebarOpen: !isOpen });
           }
         }}
         className="p-3 hover:bg-hover-background cursor-pointer"

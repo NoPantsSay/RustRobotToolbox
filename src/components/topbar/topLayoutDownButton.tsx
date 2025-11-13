@@ -39,6 +39,7 @@ function TopLayoutDownPanel({
   const {
     layouts,
     getRecentLayouts,
+    getCurrentLayout,
     updateLayout,
     pushRecentLayout,
     loadDataFromJSON,
@@ -47,10 +48,8 @@ function TopLayoutDownPanel({
   const [isLocalExpend, setIsLocalExpend] = useState(false);
   const [isOnlineExpend, setIsOnlineExpend] = useState(false);
   const recentLayouts = getRecentLayouts();
+  const currentLayoutUUID = getCurrentLayout()?.uuid;
   const tooltipId = useId();
-
-  const currentLayoutUUID =
-    recentLayouts.length > 0 ? recentLayouts[0].uuid : "";
 
   const handleImportLayout = useEffectEvent(async () => {
     const str = await importLayout();
