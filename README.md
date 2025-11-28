@@ -1,4 +1,8 @@
-# Tauri + React + Typescript
+# closevis
+
+closevis 是一个数据可视化调试工具，目前仍处于早期开发阶段。 
+
+## Tauri + React + Typescript
 
 该工程使用Tauri, React 和 Typescript in Vite。
 
