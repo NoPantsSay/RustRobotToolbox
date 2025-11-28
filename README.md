@@ -1,34 +1,34 @@
 # Tauri + React + Typescript
 
-This template should help get you started developing with Tauri, React and Typescript in Vite.
+该工程使用Tauri, React 和 Typescript in Vite。
 
-## Recommended IDE Setup
+## 推荐的 IDE 设置
 
 - [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
 
 
-## Getting Started
+## 开始
 
-### Prepare
+### 准备
 
-***This is the [environment configuration](https://tauri.app/start/prerequisites/) required for Tauri. Please follow these steps.***
+***这是 Tauri需要的[环境配置](https://tauri.app/start/prerequisites/)。 请遵循以上步骤。***
 
-If your computer already has Node.js and npm installed, you can simply run the following command to install pnpm globally:
+如果您的计算机已安装 Node.js 和 npm，只需执行以下命令即可全局安装 pnpm：
 ``` bash
 npm install -g pnpm
 ```
 
-### Run
+### 运行
 
-To develop and run the frontend in a Tauri window:
+要在 Tauri 窗口中开发运行前端：
 
 ```shell
 pnpm tauri dev
 ```
 
-### Building for release
+### 发布版本构建
 
-To build the Tauri application for release:
+构建 Tauri 应用的发布版本：
 
 ```shell
 pnpm tauri build
