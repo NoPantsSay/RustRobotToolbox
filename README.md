@@ -22,6 +22,12 @@ closevis 是一个数据可视化调试工具，目前仍处于早期开发阶�
 npm install -g pnpm
 ```
 
+### 安装项目依赖
+
+```shell
+pnpm install
+```
+
 ### 运行
 
 要在 Tauri 窗口中开发运行前端：
