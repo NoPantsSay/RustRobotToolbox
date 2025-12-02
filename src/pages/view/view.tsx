@@ -3,7 +3,7 @@ import { useTitle } from "../../globals/useTitle";
 import "../../styles/rc-dock.css";
 import clsx from "clsx";
 import {
-  type ISplitviewPanelProps,
+  LayoutPriority,
   Orientation,
   type SplitviewApi,
   SplitviewReact,
@@ -14,13 +14,13 @@ import {
 import { useLayouts } from "../../stores/useLayouts";
 import "dockview-react/dist/styles/dockview.css";
 import { useTheme } from "../../stores/useTheme";
+import { eventBus } from "../../utils/eventBus";
 import { LeftSidebar } from "./leftsidebar/leftsidebar";
+import { MainPanel } from "./mainpanel/mainpanel";
 import { RightSidebar } from "./rightsidebar/rightsidebar";
 
 const components = {
-  main: (props: ISplitviewPanelProps) => {
-    return <div>Panel {props.api.id}</div>;
-  },
+  mainpanel: MainPanel,
   leftsidebar: LeftSidebar,
   rightsidebar: RightSidebar,
 };
@@ -43,10 +43,11 @@ export function View() {
 
     event.api.addPanel({
       index: 1,
-      id: "main",
-      component: "main",
+      id: "mainpanel",
+      component: "mainpanel",
       size: event.api.width * 0.6,
       minimumSize: 100,
+      priority: LayoutPriority.High,
     });
     event.api.addPanel({
       index: 0,
@@ -71,32 +72,62 @@ export function View() {
   });
 
   useEffect(() => {
-    if (currentlayout) {
-      if (!api) {
-        return;
-      }
-
-      const leftplane = api.getPanel("leftsidebar");
-      if (leftplane) {
-        if (currentlayout.isLeftSidebarOpen) {
-          leftplane.api.setVisible(true);
-        } else {
-          leftplane.api.setVisible(false);
-        }
-      }
-
-      const rightplane = api.getPanel("rightsidebar");
-      if (rightplane) {
-        if (currentlayout.isRightSidebarOpen) {
-          rightplane.api.setVisible(true);
-        } else {
-          rightplane.api.setVisible(false);
-        }
-      }
-    } else {
+    if (!currentlayout) {
       addDefaultLayout();
     }
-  }, [currentlayout, api]);
+  }, [currentlayout]);
+
+  const toggleleftsidebar = useEffectEvent(() => {
+    if (!currentlayout) {
+      return;
+    }
+    if (!api) {
+      return;
+    }
+
+    const leftplane = api.getPanel("leftsidebar");
+    if (leftplane) {
+      leftplane.api.setVisible(!currentlayout.isLeftSidebarOpen);
+    }
+
+    updateLayout(currentlayout.uuid, {
+      isLeftSidebarOpen: !currentlayout.isLeftSidebarOpen,
+    });
+  });
+
+  const togglerightsidebar = useEffectEvent(() => {
+    if (!currentlayout) {
+      return;
+    }
+    if (!api) {
+      return;
+    }
+
+    const rightplane = api.getPanel("rightsidebar");
+    if (rightplane) {
+      rightplane.api.setVisible(!currentlayout.isRightSidebarOpen);
+    }
+
+    updateLayout(currentlayout.uuid, {
+      isRightSidebarOpen: !currentlayout.isRightSidebarOpen,
+    });
+  });
+
+  useEffect(() => {
+    eventBus.on("toggleleftsidebar", () => {
+      toggleleftsidebar();
+    });
+
+    eventBus.on("togglerightsidebar", () => {
+      togglerightsidebar();
+    });
+
+    // 组件卸载时自动清理（防止内存泄漏）
+    return () => {
+      eventBus.off("toggleleftsidebar");
+      eventBus.off("togglerightsidebar");
+    };
+  }, []);
 
   return (
     <SplitviewReact

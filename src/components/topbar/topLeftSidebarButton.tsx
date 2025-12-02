@@ -2,11 +2,12 @@ import { Button } from "@headlessui/react";
 import { useEffect, useId, useState } from "react";
 import { VscLayoutSidebarLeft, VscLayoutSidebarLeftOff } from "react-icons/vsc";
 import { useLayouts } from "../../stores/useLayouts";
+import { eventBus } from "../../utils/eventBus";
 import { TooltipWithPortal } from "../tooltips/tooltipWithPortal";
 
 export function TopLeftSidebarButton() {
   const tooltipId = useId();
-  const { getCurrentLayout, updateLayout } = useLayouts();
+  const { getCurrentLayout } = useLayouts();
   const currentlayout = getCurrentLayout();
   const [isOpen, setIsOpen] = useState(true);
 
@@ -20,10 +21,7 @@ export function TopLeftSidebarButton() {
     <>
       <Button
         onClick={() => {
-          setIsOpen(!isOpen);
-          if (currentlayout) {
-            updateLayout(currentlayout.uuid, { isLeftSidebarOpen: !isOpen });
-          }
+          eventBus.emit("toggleleftsidebar");
         }}
         className="p-3 hover:bg-hover-background cursor-pointer"
         data-tooltip-id={tooltipId}

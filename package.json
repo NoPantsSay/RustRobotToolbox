@@ -26,6 +26,7 @@
     "dockview-react": "^4.11.0",
     "flat": "^6.0.1",
     "immer": "^10.2.0",
+    "mitt": "^3.0.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-hotkeys-hook": "^5.2.1",

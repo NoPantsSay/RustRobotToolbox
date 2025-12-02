@@ -5,11 +5,12 @@ import {
   VscLayoutSidebarRightOff,
 } from "react-icons/vsc";
 import { useLayouts } from "../../stores/useLayouts";
+import { eventBus } from "../../utils/eventBus";
 import { TooltipWithPortal } from "../tooltips/tooltipWithPortal";
 
 export function TopRightSidebarButton() {
   const tooltipId = useId();
-  const { getCurrentLayout, updateLayout } = useLayouts();
+  const { getCurrentLayout } = useLayouts();
   const currentlayout = getCurrentLayout();
   const [isOpen, setIsOpen] = useState(true);
 
@@ -23,12 +24,7 @@ export function TopRightSidebarButton() {
     <>
       <Button
         onClick={() => {
-          setIsOpen(!isOpen);
-          if (currentlayout) {
-            updateLayout(currentlayout.uuid, {
-              isRightSidebarOpen: !isOpen,
-            });
-          }
+          eventBus.emit("togglerightsidebar");
         }}
         className="p-3 hover:bg-hover-background cursor-pointer"
         data-tooltip-id={tooltipId}
