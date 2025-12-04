@@ -4,6 +4,8 @@ type AppEvents = {
   addpanel: string; // 添加面板
   setleftsidebar: boolean; // 设置左侧边栏显示状态
   setrightsidebar: boolean; // 设置右侧边栏显示状态
+  openpanelsettings: undefined; // 打开面板设置
+  setActiveMainPanelId: string; // 设置当前活动的主面板ID
   // 通配符（mitt v3+ 支持）
   // biome-ignore lint/suspicious/noExplicitAny: just ingore
   "**": { type: keyof AppEvents; payload: any };

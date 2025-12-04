@@ -1,18 +1,19 @@
 import {
+  type DockviewApi,
   DockviewReact,
   type DockviewReadyEvent,
   themeDark,
   themeLight,
 } from "dockview-react";
+import { useEffect, useEffectEvent, useState } from "react";
 import { useTheme } from "../../../stores/useTheme";
 import { eventBus } from "../../../utils/eventBus";
 import { DockviewCloseButton } from "../buttons/dockviewCloseButton";
 import { tabComponents } from "../components/tabComponents";
+import { Panel } from "./panel/panel";
 
 const components = {
-  panel: () => {
-    return null;
-  },
+  panel: Panel,
   topics: () => {
     return null;
   },
@@ -35,8 +36,11 @@ const leftSidebarRightComponent = () => {
 
 export function LeftSidebar() {
   const { currentTheme } = useTheme();
+  const [api, setApi] = useState<DockviewApi>();
 
   const onReady = (event: DockviewReadyEvent) => {
+    setApi(event.api);
+
     event.api.addPanel({
       id: "panel",
       title: "Panel",
@@ -58,6 +62,31 @@ export function LeftSidebar() {
       tabComponent: "sidebar",
     });
   };
+
+  const openpanelsettings = useEffectEvent(() => {
+    if (!api) {
+      return;
+    }
+
+    const panel = api.getPanel("panel");
+    if (!panel) {
+      return;
+    }
+
+    panel.api.setActive();
+    eventBus.emit("setleftsidebar", true);
+  });
+
+  useEffect(() => {
+    eventBus.on("openpanelsettings", () => {
+      openpanelsettings();
+    });
+
+    // 组件卸载时自动清理（防止内存泄漏）
+    return () => {
+      eventBus.off("openpanelsettings");
+    };
+  }, []);
 
   return (
     <DockviewReact
