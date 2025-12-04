@@ -10,7 +10,7 @@ import { save } from "@tauri-apps/plugin-dialog";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { clsx } from "clsx";
 import { useState } from "react";
-import { HiEllipsisVertical } from "react-icons/hi2";
+import { IoEllipsisVerticalSharp } from "react-icons/io5";
 import { FormattedMessage, useIntl } from "react-intl";
 import { DeleteLayoutDialog } from "../../../components/dialogs/deleteLayoutDialog";
 import { RenameLayoutDialog } from "../../../components/dialogs/renameLayoutDialog";
@@ -68,7 +68,7 @@ export function LayoutItemMenuButton({
             "text-description hover:text-foreground hover:bg-hover-background",
           )}
         >
-          <HiEllipsisVertical size={20} />
+          <IoEllipsisVerticalSharp size={20} />
         </MenuButton>
         <MenuItems
           anchor={{ to: "bottom end" }}

@@ -1,6 +1,3 @@
-import { useEffect, useEffectEvent, useState } from "react";
-import { useTitle } from "../../globals/useTitle";
-import "../../styles/rc-dock.css";
 import clsx from "clsx";
 import {
   LayoutPriority,
@@ -11,6 +8,8 @@ import {
   themeDark,
   themeLight,
 } from "dockview-react";
+import { useEffect, useEffectEvent, useState } from "react";
+import { useTitle } from "../../globals/useTitle";
 import { useLayouts } from "../../stores/useLayouts";
 import "dockview-react/dist/styles/dockview.css";
 import { useTheme } from "../../stores/useTheme";
@@ -49,20 +48,29 @@ export function View() {
       minimumSize: 100,
       priority: LayoutPriority.High,
     });
-    event.api.addPanel({
+    const leftplane = event.api.addPanel({
       index: 0,
       id: "leftsidebar",
       component: "leftsidebar",
       size: event.api.width * 0.2,
       minimumSize: 100,
     });
-    event.api.addPanel({
+
+    leftplane.api.setVisible(
+      currentlayout ? currentlayout.isLeftSidebarOpen : true,
+    );
+
+    const rightplane = event.api.addPanel({
       index: 2,
       id: "rightsidebar",
       component: "rightsidebar",
       size: event.api.width * 0.2,
       minimumSize: 100,
     });
+
+    rightplane.api.setVisible(
+      currentlayout ? currentlayout.isRightSidebarOpen : true,
+    );
   };
 
   const addDefaultLayout = useEffectEvent(() => {
@@ -77,7 +85,7 @@ export function View() {
     }
   }, [currentlayout]);
 
-  const toggleleftsidebar = useEffectEvent(() => {
+  const setleftsidebar = useEffectEvent((isOpen: boolean) => {
     if (!currentlayout) {
       return;
     }
@@ -87,15 +95,15 @@ export function View() {
 
     const leftplane = api.getPanel("leftsidebar");
     if (leftplane) {
-      leftplane.api.setVisible(!currentlayout.isLeftSidebarOpen);
+      leftplane.api.setVisible(isOpen);
     }
 
     updateLayout(currentlayout.uuid, {
-      isLeftSidebarOpen: !currentlayout.isLeftSidebarOpen,
+      isLeftSidebarOpen: isOpen,
     });
   });
 
-  const togglerightsidebar = useEffectEvent(() => {
+  const setrightsidebar = useEffectEvent((isOpen: boolean) => {
     if (!currentlayout) {
       return;
     }
@@ -105,27 +113,27 @@ export function View() {
 
     const rightplane = api.getPanel("rightsidebar");
     if (rightplane) {
-      rightplane.api.setVisible(!currentlayout.isRightSidebarOpen);
+      rightplane.api.setVisible(isOpen);
     }
 
     updateLayout(currentlayout.uuid, {
-      isRightSidebarOpen: !currentlayout.isRightSidebarOpen,
+      isRightSidebarOpen: isOpen,
     });
   });
 
   useEffect(() => {
-    eventBus.on("toggleleftsidebar", () => {
-      toggleleftsidebar();
+    eventBus.on("setleftsidebar", (isOpen) => {
+      setleftsidebar(isOpen);
     });
 
-    eventBus.on("togglerightsidebar", () => {
-      togglerightsidebar();
+    eventBus.on("setrightsidebar", (isOpen) => {
+      setrightsidebar(isOpen);
     });
 
     // 组件卸载时自动清理（防止内存泄漏）
     return () => {
-      eventBus.off("toggleleftsidebar");
-      eventBus.off("togglerightsidebar");
+      eventBus.off("setleftsidebar");
+      eventBus.off("setrightsidebar");
     };
   }, []);
 

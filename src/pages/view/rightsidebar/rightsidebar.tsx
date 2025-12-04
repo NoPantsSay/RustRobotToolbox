@@ -4,9 +4,9 @@ import {
   themeDark,
   themeLight,
 } from "dockview-react";
-import { DockviewCloseButton } from "../../../components/buttons/dockviewCloseButton";
-import { useLayouts } from "../../../stores/useLayouts";
 import { useTheme } from "../../../stores/useTheme";
+import { eventBus } from "../../../utils/eventBus";
+import { DockviewCloseButton } from "../buttons/dockviewCloseButton";
 import { tabComponents } from "../components/tabComponents";
 
 const components = {
@@ -19,16 +19,11 @@ const components = {
 };
 
 const rightSidebarRightComponent = () => {
-  const { getCurrentLayout, updateLayout } = useLayouts();
-  const currentlayout = getCurrentLayout();
-
   return (
     <div className="flex h-full items-center justify-center">
       <DockviewCloseButton
         onClick={() => {
-          if (currentlayout) {
-            updateLayout(currentlayout.uuid, { isRightSidebarOpen: false });
-          }
+          eventBus.emit("setrightsidebar", false);
         }}
       />
     </div>

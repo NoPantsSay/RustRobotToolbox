@@ -24,7 +24,7 @@ export function TopRightSidebarButton() {
     <>
       <Button
         onClick={() => {
-          eventBus.emit("togglerightsidebar");
+          eventBus.emit("setrightsidebar", !isOpen);
         }}
         className="p-3 hover:bg-hover-background cursor-pointer"
         data-tooltip-id={tooltipId}

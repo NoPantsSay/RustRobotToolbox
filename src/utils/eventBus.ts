@@ -2,8 +2,8 @@ import mitt from "mitt";
 
 type AppEvents = {
   addpanel: string; // 添加面板
-  toggleleftsidebar: undefined; // 切换左侧边栏显示状态
-  togglerightsidebar: undefined; // 切换右侧边栏显示状态
+  setleftsidebar: boolean; // 设置左侧边栏显示状态
+  setrightsidebar: boolean; // 设置右侧边栏显示状态
   // 通配符（mitt v3+ 支持）
   // biome-ignore lint/suspicious/noExplicitAny: just ingore
   "**": { type: keyof AppEvents; payload: any };
