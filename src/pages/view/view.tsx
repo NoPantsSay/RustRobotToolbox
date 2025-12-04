@@ -14,9 +14,9 @@ import { useLayouts } from "../../stores/useLayouts";
 import "dockview-react/dist/styles/dockview.css";
 import { useTheme } from "../../stores/useTheme";
 import { eventBus } from "../../utils/eventBus";
-import { LeftSidebar } from "./leftsidebar/leftsidebar";
-import { MainPanel } from "./mainpanel/mainpanel";
-import { RightSidebar } from "./rightsidebar/rightsidebar";
+import { LeftSidebar } from "./leftSidebar/leftSidebar";
+import { MainPanel } from "./mainPanel/mainPanel";
+import { RightSidebar } from "./rightSidebar/rightSidebar";
 
 const components = {
   mainpanel: MainPanel,
