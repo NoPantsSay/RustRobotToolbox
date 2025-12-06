@@ -1,7 +1,8 @@
+import type { AddPanelPositionOptions } from "dockview-react";
 import mitt from "mitt";
 
 type AppEvents = {
-  addpanel: string; // 添加面板
+  addpanel: { component: string; position?: AddPanelPositionOptions }; // 添加面板
   setleftsidebar: boolean; // 设置左侧边栏显示状态
   setrightsidebar: boolean; // 设置右侧边栏显示状态
   openpanelsettings: undefined; // 打开面板设置

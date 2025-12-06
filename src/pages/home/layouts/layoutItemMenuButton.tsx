@@ -72,7 +72,7 @@ export function LayoutItemMenuButton({
         </MenuButton>
         <MenuItems
           anchor={{ to: "bottom end" }}
-          className="flex flex-col py-1 bg-second-background shadow-lg outline-none"
+          className="flex flex-col py-1 bg-second-background z-10 shadow-lg outline-none"
         >
           <MenuItem>
             <Button

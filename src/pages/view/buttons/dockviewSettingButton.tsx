@@ -3,7 +3,10 @@ import { IoSettingsSharp } from "react-icons/io5";
 
 export function DockviewSettingButton({ onClick }: { onClick?: () => void }) {
   return (
-    <Button className="hover:bg-hover-background p-2" onClick={onClick}>
+    <Button
+      className="hover:bg-hover-background p-2 cursor-pointer"
+      onClick={onClick}
+    >
       <IoSettingsSharp size={16} />
     </Button>
   );

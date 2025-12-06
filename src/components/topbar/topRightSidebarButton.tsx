@@ -1,5 +1,5 @@
 import { Button } from "@headlessui/react";
-import { useEffect, useId, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   VscLayoutSidebarRight,
   VscLayoutSidebarRightOff,
@@ -9,7 +9,7 @@ import { eventBus } from "../../utils/eventBus";
 import { TooltipWithPortal } from "../tooltips/tooltipWithPortal";
 
 export function TopRightSidebarButton() {
-  const tooltipId = useId();
+  const tooltipId = "TopRightSidebarButtonTooltipId";
   const { getCurrentLayout } = useLayouts();
   const currentlayout = getCurrentLayout();
   const [isOpen, setIsOpen] = useState(true);

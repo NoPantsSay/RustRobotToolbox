@@ -1,4 +1,5 @@
 import {
+  type AddPanelPositionOptions,
   type DockviewApi,
   DockviewReact,
   type DockviewReadyEvent,
@@ -43,26 +44,29 @@ export function MainPanel() {
     };
   }, [api]);
 
-  const addpanel = useEffectEvent((component: string) => {
-    if (!api) {
-      return;
-    }
+  const addpanel = useEffectEvent(
+    (component: string, position?: AddPanelPositionOptions) => {
+      if (!api) {
+        return;
+      }
 
-    const panel = api.addPanel({
-      id: Date.now().toString(),
-      component,
-      tabComponent: "default",
-      position: {
-        direction: "left",
-      },
-    });
+      const positionOption = position ? position : { direction: "left" };
 
-    panel.group.locked = true;
-  });
+      const panel = api.addPanel({
+        id: Date.now().toString(),
+        component,
+        tabComponent: "default",
+        position: positionOption,
+        minimumWidth: 64,
+      });
+
+      panel.group.locked = true;
+    },
+  );
 
   useEffect(() => {
-    eventBus.on("addpanel", (component) => {
-      addpanel(component);
+    eventBus.on("addpanel", ({ component, position }) => {
+      addpanel(component, position);
     });
 
     // 组件卸载时自动清理（防止内存泄漏）
@@ -80,6 +84,7 @@ export function MainPanel() {
       watermarkComponent={watermark}
       disableFloatingGroups={true}
       singleTabMode="fullwidth"
+      disableTabsOverflowList={true}
     />
   );
 }

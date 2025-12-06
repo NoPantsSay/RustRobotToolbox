@@ -10,23 +10,35 @@ export const tabComponents = {
     const [maximized, setMaximized] = useState<boolean>(
       props.api.isMaximized(),
     );
+    const [width, setWidth] = useState<number>(props.api.width);
 
     useEffect(() => {
-      const disposable = props.containerApi.onDidMaximizedGroupChange(
-        ({ isMaximized }) => {
+      const disposables = [
+        props.containerApi.onDidMaximizedGroupChange(({ isMaximized }) => {
           setMaximized(isMaximized);
-        },
-      );
+        }),
+
+        props.api.onDidDimensionsChange((dimensions) => {
+          setWidth(dimensions.width);
+        }),
+      ];
 
       return () => {
-        disposable.dispose();
+        disposables.forEach((d) => {
+          d.dispose();
+        });
       };
-    }, [props.containerApi]);
+    }, [props.containerApi, props.api]);
 
     return (
-      <div className="flex h-full items-center justify-between select-none text-foreground bg-second-background">
-        <span>{props.api.title}</span>
-        <div className="flex h-full items-center justify-end">
+      <div
+        className="grid grid-cols-[1fr_auto] h-full items-center select-none text-foreground bg-second-background"
+        style={{ width: width }}
+      >
+        <div className="flex items-center overflow-hidden">
+          <span className="px-1">{props.api.title}</span>
+        </div>
+        <div className="flex items-center justify-end overflow-hidden">
           <DockviewExpandButton
             isExpand={!maximized}
             onClick={() => {
@@ -42,7 +54,7 @@ export const tabComponents = {
               eventBus.emit("openpanelsettings");
             }}
           />
-          <DockviewMenuButton />
+          <DockviewMenuButton props={props} maximized={maximized} />
         </div>
       </div>
     );

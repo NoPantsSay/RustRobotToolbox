@@ -1,4 +1,3 @@
-import { useId } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import {
   HiLink,
@@ -26,7 +25,7 @@ export function HomeNavigate() {
   const currentPath = location.pathname;
   const intl = useIntl();
   const { language } = useLanguage();
-  const tooltipId = useId();
+  const tooltipId = "HomeNavigateTooltipId";
   const { openFileHotkey, openConnectHotkey } = useUserHotkey();
 
   useHotkeys(

@@ -7,7 +7,7 @@ import {
 } from "@headlessui/react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import clsx from "clsx";
-import { useEffectEvent, useId, useMemo, useRef, useState } from "react";
+import { useEffectEvent, useMemo, useRef, useState } from "react";
 import type { IconType } from "react-icons";
 import { HiChevronDown, HiChevronRight } from "react-icons/hi2";
 import { RiLayoutMasonryLine } from "react-icons/ri";
@@ -49,7 +49,7 @@ function TopLayoutDownPanel({
   const [isOnlineExpend, setIsOnlineExpend] = useState(false);
   const recentLayouts = getRecentLayouts();
   const currentLayoutUUID = getCurrentLayout()?.uuid;
-  const tooltipId = useId();
+  const tooltipId = "TopLayoutDownPanelTooltipId";
 
   const handleImportLayout = useEffectEvent(async () => {
     const str = await importLayout();

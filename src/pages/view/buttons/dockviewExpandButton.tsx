@@ -9,7 +9,10 @@ export function DockviewExpandButton({
   onClick?: () => void;
 }) {
   return (
-    <Button className="hover:bg-hover-background p-2" onClick={onClick}>
+    <Button
+      className="hover:bg-hover-background p-2 cursor-pointer"
+      onClick={onClick}
+    >
       {isExpand ? <IoMdExpand size={16} /> : <IoMdContract size={16} />}
     </Button>
   );
